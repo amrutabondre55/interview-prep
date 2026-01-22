@@ -185,11 +185,83 @@ If asked **“Have you used REST APIs in your project?”**, always mention:
 
 ---
 
-If you want, I can also provide:
+Here are **5 very common microservices interview questions** with **simple, clear answers** that match your **3+ years Java Full Stack profile** and your **pharma project context**.
 
-* **Java + Spring Boot REST interview answers**
-* **2-minute REST explanation**
-* **Real project REST API example**
-* **Tricky REST interview questions**
+---
 
-Just tell me 👍
+## ✅ 1) What are Microservices?
+
+**Answer (Simple English):**
+
+> Microservices is an architecture where a large application is broken into **small, independent services**.
+> Each service focuses on **one business capability**, has its **own database**, and communicates with other services using **REST APIs or messaging**.
+
+**Example:**
+
+> In our pharma system, Inventory, Batch, and Reporting can be separate microservices.
+
+---
+
+## ✅ 2) How do microservices communicate with each other?
+
+**Answer:**
+
+> Microservices communicate mainly using **REST APIs** over HTTP.
+> In some cases, **asynchronous communication** using message queues like Kafka or RabbitMQ is used.
+
+**In my project:**
+
+> Our services communicated using **REST APIs**, and API Gateway was used to route requests.
+
+---
+
+## ✅ 3) What are the advantages of microservices?
+
+**Answer:**
+
+> The main advantages are:
+
+* Independent deployment
+* Better scalability
+* Fault isolation
+* Faster development by multiple teams
+
+**Example:**
+
+> If Reporting service fails, Inventory service still works.
+
+---
+
+## ✅ 4) How is security handled in microservices?
+
+**Answer:**
+
+> Security is handled using **JWT or OAuth**, where a token is generated after login and passed with every API request.
+> API Gateway validates the token before forwarding the request to services.
+
+**In my project:**
+
+> We used **role-based access control** and token-based authentication.
+
+---
+
+## ✅ 5) What challenges did you face with microservices and how did you handle them?
+
+**Answer:**
+
+> Some common challenges are:
+
+* Service communication failures
+* Data consistency
+* Debugging issues
+
+**How we handled:**
+
+> We used proper **logging**, **exception handling**, **timeouts**, and followed clear API contracts.
+
+---
+
+## 🎯 Bonus One-Liner (Very Impressive)
+
+> “Microservices help us scale and deploy features independently, but they require good API design, monitoring, and communication handling.”
+
