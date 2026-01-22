@@ -113,7 +113,9 @@ You can speak this **confidently in interviews**.
 
 ## 🎯 Final 30-Second Interview Summary
 
-> **“We follow a CI/CD-based deployment. Developers raise PRs, seniors review the code, and once merged into the main branch, GitHub Actions triggers the pipeline. The backend is containerized using Docker, pushed to Amazon ECR, and deployed on ECS Fargate. The frontend is built and deployed to S3 and served through CloudFront with cache invalidation. AWS WAF is used to restrict access using allowed IPs. This approach ensures automated, secure, scalable, and reliable deployments.”**
+> **“We follow a CI/CD-based deployment. Developers raise PRs, seniors review the code, and once merged into the main branch, GitHub Actions triggers the pipeline. GitHub Actions builds the backend application
+A Docker image is created using a Dockerfile, then  Docker image pushed to Amazon ECR, and deployed on ECS Fargate.
+> The frontend is built and deployed to S3 and served through CloudFront with cache invalidation. AWS WAF is used to restrict access using allowed IPs. This approach ensures automated, secure, scalable, and reliable deployments.”**
 
 ---
 
