@@ -212,6 +212,13 @@ componentDidCatch()
 “In our hospital IT dashboard, we wrapped critical widgets like charts and tables with Error Boundaries so that if one widget failed, the rest of the dashboard continued to work.”
 ---
 
+
+How to Handle Errors in Hooks (React)
+
+Important rule (say this first):
+Hooks cannot use Error Boundaries directly.
+Errors must be handled manually inside hooks or wrapped by an Error Boundary at component level.
+
 ## 2️⃣5️⃣ How do you test React components?
 
 **Answer:**
