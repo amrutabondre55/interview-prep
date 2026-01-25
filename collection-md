@@ -1,0 +1,252 @@
+
+## 1️⃣ What is Collections Framework? (Start here)
+
+> The Java Collections Framework is a **set of interfaces and classes** that provides a **standard way to store, manipulate, and retrieve groups of objects**.
+
+### Why it exists
+
+* Before collections → Arrays (fixed size, no utilities)
+* Collections give:
+
+  * Dynamic size
+  * Ready-made data structures
+  * Better performance choices
+
+---
+
+## 2️⃣ Collection vs Collections (VERY COMMON QUESTION)
+
+| Collection                    | Collections             |
+| ----------------------------- | ----------------------- |
+| Interface                     | Utility class           |
+| Represents a group of objects | Provides helper methods |
+| Root of List, Set, Queue      | Static methods only     |
+| Example: `List`, `Set`        | `sort()`, `reverse()`   |
+
+```java
+Collection<Integer> c = new ArrayList<>();
+Collections.sort(list);
+```
+> Collection is a data structure, Collections is a utility class.
+---
+
+## 3️⃣ Core Interfaces (Big Picture)
+
+```
+Iterable
+   ↓
+Collection
+   ↓
+--------------------------------
+|        |         |
+List     Set      Queue
+                   |
+                  Deque
+Map ❌ (separate hierarchy)
+```
+
+---
+
+## 4️⃣ List Interface (ORDERED + DUPLICATES ALLOWED)
+
+### Properties
+
+* Maintains insertion order
+* Allows duplicates
+* Index-based access
+
+### Implementations
+
+* `ArrayList`
+* `LinkedList`
+* `Vector` (legacy)
+
+---
+
+### 4.1 ArrayList vs LinkedList (Asked A LOT)
+
+| Feature                | ArrayList     | LinkedList         |
+| ---------------------- | ------------- | ------------------ |
+| Data structure         | Dynamic Array | Doubly Linked List |
+| Access                 | Fast (`O(1)`) | Slow (`O(n)`)      |
+| Insert/Delete (middle) | Slow          | Fast               |
+| Memory                 | Less          | More (prev + next) |
+
+👉 **When to use**
+
+* **ArrayList** → Read-heavy
+* **LinkedList** → Insert/Delete-heavy
+
+---
+
+### 4.2 Internal Working of ArrayList (VERY IMPORTANT)
+
+```java
+ArrayList<Integer> list = new ArrayList<>();
+```
+
+**Internally uses:**
+
+```java
+Object[] elementData;
+```
+
+### Steps:
+
+1. Initial capacity = **10**
+2. When array is full:
+
+   * New capacity = `oldCapacity * 1.5`
+3. Old elements copied to new array
+
+👉 **Why insertion is slow?**
+Because resizing + copying happens.
+
+---
+
+### 4.3 Fail-Fast vs Fail-Safe Iterators
+
+| Fail-Fast                                | Fail-Safe          |                   |
+| ---------------------------------------- | ------------------ | ----------------- |
+| Throws `ConcurrentModificationException` | No exception       |                   |
+| Works on original collection             | Works on copy      |                   |
+| Faster                                   | Safer              |                   |
+| Examples                                 | ArrayList, HashMap | ConcurrentHashMap |
+
+---
+
+## 5️⃣ Set Interface (NO DUPLICATES)
+
+### Properties
+
+* No duplicate elements
+* No index
+* Uses `equals()` + `hashCode()`
+
+---
+
+### 5.1 HashSet vs LinkedHashSet vs TreeSet
+
+| Feature        | HashSet     | LinkedHashSet         | TreeSet        |
+| -------------- | ----------- | --------------------- | -------------- |
+| Order          | No          | Insertion             | Sorted         |
+| Data structure | HashMap     | HashMap + Linked list | Red-Black Tree |
+| Null           | One allowed | One allowed           | ❌ Not allowed  |
+| Speed          | Fastest     | Medium                | Slow           |
+
+---
+
+### 5.2 How HashSet Works Internally
+
+```java
+HashSet<String> set = new HashSet<>();
+```
+
+👉 **Internally uses `HashMap`**
+
+```java
+HashMap<E, Object>
+```
+
+* Element = **key**
+* Value = dummy object (`PRESENT`)
+
+### Steps:
+
+1. `hashCode()` → bucket
+2. `equals()` → check duplicate
+3. If match → not added
+
+👉 **Why duplicates not allowed?**
+Because `HashMap` does not allow duplicate keys.
+
+---
+
+## 6️⃣ Map Interface (KEY-VALUE PAIRS)
+
+### Properties
+
+* Keys must be unique
+* Values can be duplicate
+* Not part of Collection hierarchy
+
+---
+
+### 6.1 HashMap vs LinkedHashMap vs TreeMap
+
+| Feature   | HashMap     | LinkedHashMap      | TreeMap        |
+| --------- | ----------- | ------------------ | -------------- |
+| Order     | No          | Insertion          | Sorted         |
+| Null key  | One allowed | One allowed        | ❌              |
+| Structure | Hash table  | Hash + Linked list | Red-Black Tree |
+| Speed     | Fastest     | Slightly slower    | Slow           |
+
+---
+
+## 6.2 Internal Working of HashMap (🔥 MOST IMPORTANT 🔥)
+
+```java
+HashMap<Integer, String> map = new HashMap<>();
+```
+
+### Step-by-Step:
+
+1. `hashCode()` called on key
+2. Hash converted to **bucket index**
+3. If bucket empty → insert
+4. If collision:
+
+   * `equals()` called
+   * If same → replace value
+   * If different → chain formed
+
+### Collision Handling
+
+* Java 7 → Linked List
+* Java 8+ → **Red-Black Tree** (after threshold)
+
+👉 **Why tree?**
+To improve performance from `O(n)` to `O(log n)`.
+
+---
+
+### 6.3 Why HashMap Allows One `null` Key?
+
+* `null` has no `hashCode()`
+* HashMap treats `null` as **bucket 0**
+* Only one `null` key allowed to avoid ambiguity
+
+---
+
+## 7️⃣ ConcurrentHashMap vs HashMap
+
+| Feature     | HashMap | ConcurrentHashMap |
+| ----------- | ------- | ----------------- |
+| Thread-safe | ❌ No    | ✅ Yes             |
+| Performance | Fast    | Slightly slower   |
+| Locking     | No      | Bucket-level      |
+| Null        | Allowed | ❌ Not allowed     |
+
+👉 **Why no null?**
+To avoid ambiguity during concurrent reads.
+
+---
+
+## 8️⃣ Hashtable vs HashMap (Classic Question)
+
+| Feature     | Hashtable | HashMap |
+| ----------- | --------- | ------- |
+| Thread-safe | ✅         | ❌       |
+| Performance | Slow      | Fast    |
+| Null        | ❌         | ✅       |
+| Legacy      | Yes       | No      |
+
+👉 **Interview line:**
+
+> Hashtable is synchronized, HashMap is not.
+
+---
+🔹 What is HashMap?
+
+HashMap is a part of java.util package and it stores data in key–value pairs.
+It allows one null key and multiple null values and provides O(1) average time complexity for put() and get().
