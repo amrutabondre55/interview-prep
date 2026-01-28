@@ -1,0 +1,137 @@
+Nice 👍 this is a **very common interview combo**.
+Below are **INTERVIEW-READY questions on Lambda Expressions & Functional Interfaces** with **short, crisp answers** (easy to remember + speak).
+
+---
+
+# 🔥 **Lambda Expression & Functional Interface – Interview Questions**
+
+---
+
+## **1️⃣ What is a lambda expression?**
+
+**Answer:**
+A lambda expression is an **anonymous function** introduced in Java 8 to **implement functional interfaces** in a concise way.
+
+---
+
+## **2️⃣ What is a functional interface?**
+
+**Answer:**
+A functional interface is an interface that contains **exactly one abstract method**, and it is the **target type** for lambda expressions.
+
+---
+
+## **3️⃣ Can we use lambda expression without functional interface?**
+
+**Answer:**
+❌ No.
+Lambda expressions **must be associated with a functional interface**.
+
+---
+
+## **4️⃣ Why functional interface has only one abstract method?**
+
+**Answer:**
+Because lambda expressions need **only one method to implement**.
+Multiple abstract methods would create ambiguity.
+
+---
+
+## **5️⃣ What is `@FunctionalInterface` annotation?**
+
+**Answer:**
+It ensures at **compile time** that an interface has **only one abstract method**.
+It is **optional but recommended**.
+
+---
+
+## **6️⃣ Can a functional interface have default methods?**
+
+**Answer:**
+✅ Yes.
+A functional interface can have **any number of default and static methods**, but only **one abstract method**.
+
+---
+
+## **7️⃣ Difference between Lambda Expression and Anonymous Inner Class**
+
+**Answer:**
+
+| Lambda            | Anonymous Inner Class |
+| ----------------- | --------------------- |
+| Less code         | More code             |
+| No own `this`     | Has its own `this`    |
+| Faster & readable | Slower & verbose      |
+| Java 8 feature    | Before Java 8         |
+
+---
+
+## **8️⃣ Can lambda expression access local variables?**
+
+**Answer:**
+✅ Yes, but local variables must be **final or effectively final**.
+
+---
+
+## **9️⃣ Why local variables must be effectively final in lambda?**
+
+**Answer:**
+To avoid **thread-safety and consistency issues**, since lambdas may execute later.
+
+---
+
+## **🔟 Name some built-in functional interfaces**
+
+**Answer:**
+
+* `Predicate<T>`
+* `Function<T, R>`
+* `Consumer<T>`
+* `Supplier<T>`
+* `Runnable`
+* `Comparator`
+
+---
+
+## **1️⃣1️⃣ Can lambda expression throw checked exception?**
+
+**Answer:**
+✅ Yes, **only if the functional interface method declares it**.
+
+---
+
+## **1️⃣2️⃣ Difference between Predicate and Function**
+
+**Answer:**
+
+* `Predicate` → returns **boolean**
+* `Function` → returns **any value**
+
+---
+
+## **1️⃣3️⃣ Can we overload methods with lambda expressions?**
+
+**Answer:**
+❌ No, because lambda expressions do not have a **type of their own**.
+
+---
+
+## **1️⃣4️⃣ What is method reference? How is it related to lambda?**
+
+**Answer:**
+Method reference is a **shorter form of lambda expression** that refers to an existing method.
+
+---
+
+## **1️⃣5️⃣ Where do you use lambda in real projects?**
+
+**Answer:**
+
+* Stream API (`filter`, `map`)
+* Sorting using `Comparator`
+* Asynchronous programming
+* Collection processing
+
+---
+
+
