@@ -368,4 +368,17 @@ GET /api/employees/101
 
 ---
 
+## What is Configuration Management?
+
+**Answer:**
+Configuration Management is the process of managing, storing, and controlling application settings separately from the code so that the same application can run in different environments (dev, test, prod) without code changes.
+
+👉 In short: change behavior without changing code.
+
+“Configuration management is the practice of externalizing application settings so that the same codebase can be deployed across multiple environments by changing only configuration values. In Spring Boot, this is achieved using properties files, profiles, and tools like Spring Cloud Config.”
+
+“In production, we change the database and API keys using configuration files without touching the application code.”
+
+---
+
 
