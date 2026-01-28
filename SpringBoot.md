@@ -259,3 +259,649 @@ HTTP Status: **404**
 > “`@RestControllerAdvice` returns JSON response by default.”
 
 ---
+Here’s a **clear, interview-ready explanation of Exception Handling in Spring / Spring Boot**, explained **step by step** with a **realistic example**, exactly how you can **say it in an interview** 👇
+
+---
+
+## What is Exception Handling in Spring? (Interview Answer)
+
+> **“Exception handling in Spring is used to handle runtime errors globally in a centralized way so that the application does not crash and returns meaningful responses.”**
+
+---
+
+## Why Do We Need Exception Handling?
+
+✔ Avoid application crash
+✔ Return proper HTTP status codes
+✔ Centralized error handling
+✔ Clean and consistent error responses
+
+---
+
+## Best Way to Handle Exceptions in Spring Boot
+
+### ✅ Using **`@ControllerAdvice` + `@ExceptionHandler`**
+
+---
+
+## Real Example: *Employee Not Found*
+
+---
+
+### 1️⃣ Custom Exception Class
+
+```java
+public class EmployeeNotFoundException extends RuntimeException {
+
+    public EmployeeNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+
+---
+
+### 2️⃣ Service Layer (Throws Exception)
+
+```java
+@Service
+public class EmployeeService {
+
+    public String getEmployeeById(int id) {
+        if (id != 1) {
+            throw new EmployeeNotFoundException("Employee not found with id: " + id);
+        }
+        return "Amruta";
+    }
+}
+```
+
+📌 **Exception is thrown from Service layer**, not Controller.
+
+---
+
+### 3️⃣ Controller Layer
+
+```java
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @GetMapping("/{id}")
+    public String getEmployee(@PathVariable int id) {
+        return employeeService.getEmployeeById(id);
+    }
+}
+```
+
+---
+
+### 4️⃣ Global Exception Handler (`@ControllerAdvice`)
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<String> handleEmployeeNotFound(
+            EmployeeNotFoundException ex) {
+
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}
+```
+
+---
+
+## Flow Explanation (Interview Gold ⭐)
+
+> 1️⃣ Controller calls Service
+> 2️⃣ Service throws custom exception
+> 3️⃣ `@ControllerAdvice` catches exception
+> 4️⃣ Returns meaningful HTTP response
+
+---
+
+## HTTP Status Codes Used
+
+| Scenario           | Status                      |
+| ------------------ | --------------------------- |
+| Resource not found | `404 NOT_FOUND`             |
+| Bad input          | `400 BAD_REQUEST`           |
+| Server error       | `500 INTERNAL_SERVER_ERROR` |
+
+---
+
+## One-Line Interview Summary (Very Strong)
+
+> **“In Spring Boot, exceptions are handled globally using `@ControllerAdvice` and `@ExceptionHandler` to return clean and meaningful error responses.”**
+
+---
+
+## Common Interview Follow-Ups
+
+### ❓ Why not handle exceptions in controller?
+
+> Because it leads to duplicate code and poor maintainability.
+
+### ❓ Can we handle multiple exceptions in one handler?
+
+> Yes, using multiple exception classes in `@ExceptionHandler`.
+
+---
+
+Big question 👍 — interviewers **love** this one.
+I’ll explain **Spring Boot annotations in a structured, interview-ready way**, grouped by **layer + purpose**, and for **each annotation I’ll tell you**:
+
+* **What it is**
+* **When we use it**
+* **Why we use it**
+
+You can confidently answer this for **3–5 years experience** level.
+
+---
+
+# 🌱 Core Spring Boot Annotations (Startup)
+
+## `@SpringBootApplication`
+
+**What:** Main entry annotation
+**When:** On main class
+**Why:** Enables auto-configuration, component scan, and configuration
+
+```java
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+```
+
+➡ Combines:
+
+* `@Configuration`
+* `@EnableAutoConfiguration`
+* `@ComponentScan`
+
+---
+
+# 🧩 Stereotype Annotations (Bean Creation)
+
+## `@Component`
+
+**What:** Generic Spring bean
+**When:** Utility/helper classes
+**Why:** Makes class Spring-managed
+
+---
+
+## `@Service`
+
+**What:** Service layer bean
+**When:** Business logic
+**Why:** Clear separation of business logic
+
+---
+
+## `@Repository`
+
+**What:** DAO layer bean
+**When:** Database operations
+**Why:** Translates DB exceptions to Spring exceptions
+
+---
+
+## `@Controller`
+
+**What:** MVC controller
+**When:** Returning views (JSP/HTML)
+**Why:** Handles web requests
+
+---
+
+## `@RestController`
+
+**What:** REST controller
+**When:** Returning JSON/XML
+**Why:** Avoids `@ResponseBody`
+
+---
+
+# 🔄 Dependency Injection Annotations
+
+## `@Autowired`
+
+**What:** Inject dependency
+**When:** Field/constructor/setter
+**Why:** Removes `new` keyword
+
+---
+
+## `@Qualifier`
+
+**What:** Select specific bean
+**When:** Multiple beans of same type
+**Why:** Resolve ambiguity
+
+---
+
+## `@Primary`
+
+**What:** Default bean
+**When:** Multiple beans
+**Why:** Avoid ambiguity without qualifier
+
+---
+
+# 🧠 Configuration Annotations
+
+## `@Configuration`
+
+**What:** Java-based config
+**When:** Config classes
+**Why:** Replaces XML
+
+---
+
+## `@Bean`
+
+**What:** Creates bean manually
+**When:** Third-party classes
+**Why:** Fine-grained control
+
+---
+
+## `@ComponentScan`
+
+**What:** Scans packages
+**When:** Custom scan location
+**Why:** Detect beans
+
+---
+
+# 🌐 Web / REST Annotations
+
+## `@RequestMapping`
+
+**What:** Map URL
+**When:** Controller level
+**Why:** Define base path
+
+---
+
+## `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`
+
+**What:** HTTP methods
+**When:** REST APIs
+**Why:** Clean and readable code
+
+---
+
+## `@PathVariable`
+
+**What:** URL variable
+**When:** `/users/{id}`
+**Why:** Dynamic values
+
+---
+
+## `@RequestParam`
+
+**What:** Query parameter
+**When:** `?page=1`
+**Why:** Optional inputs
+
+---
+
+## `@RequestBody`
+
+**What:** Read request JSON
+**When:** POST/PUT
+**Why:** Map JSON to object
+
+---
+
+# 🧾 Exception Handling
+
+## `@ControllerAdvice`
+
+**What:** Global exception handler
+**When:** Centralized handling
+**Why:** Avoid duplicate code
+
+---
+
+## `@ExceptionHandler`
+
+**What:** Handle specific exception
+**When:** Custom error handling
+**Why:** Clean error response
+
+---
+
+## `@ResponseStatus`
+
+**What:** Set HTTP status
+**When:** Custom exceptions
+**Why:** Correct status codes
+
+---
+
+# 🗄️ JPA / Hibernate Annotations
+
+## `@Entity`
+
+**What:** JPA entity
+**When:** DB table mapping
+**Why:** ORM support
+
+---
+
+## `@Table`
+
+**What:** Table name
+**When:** Custom table
+**Why:** Map class to table
+
+---
+
+## `@Id`
+
+**What:** Primary key
+**When:** Entity
+**Why:** Unique identification
+
+---
+
+## `@GeneratedValue`
+
+**What:** Auto ID
+**When:** Primary key
+**Why:** Auto increment
+
+---
+
+## `@OneToOne`, `@OneToMany`, `@ManyToOne`, `@ManyToMany`
+
+**What:** Relationships
+**When:** Entity mapping
+**Why:** Table relations
+
+---
+
+# 🔐 Transaction Management
+
+## `@Transactional`
+
+**What:** Transaction boundary
+**When:** Service layer
+**Why:** Ensure data consistency
+
+---
+
+# ⚙️ Profiles & Properties
+
+## `@Profile`
+
+**What:** Environment-based beans
+**When:** dev/test/prod
+**Why:** Environment separation
+
+---
+
+## `@Value`
+
+**What:** Read property
+**When:** application.properties
+**Why:** External configuration
+
+---
+
+## `@ConfigurationProperties`
+
+**What:** Bulk properties
+**When:** Grouped config
+**Why:** Cleaner config handling
+
+---
+
+# 🧪 Testing Annotations
+
+## `@SpringBootTest`
+
+**What:** Load full context
+**When:** Integration tests
+**Why:** End-to-end testing
+
+---
+
+## `@MockBean`
+
+**What:** Mock dependency
+**When:** Unit testing
+**Why:** Isolate test
+
+---
+
+# 🧠 ONE-LINE INTERVIEW SUMMARY (🔥)
+
+> **“Spring Boot annotations are used to simplify configuration, manage beans, handle dependency injection, build REST APIs, manage transactions, handle exceptions, and integrate with databases in a clean and maintainable way.”**
+
+---
+Perfect 👍
+Here are the **MOST FREQUENTLY ASKED Spring Boot annotations in interviews**, filtered to what interviewers **actually expect you to know**, with **when + why + one-line answers** you can memorize and speak confidently.
+
+---
+
+# 🔥 Top Spring Boot Annotations Asked in Interviews
+
+## 1️⃣ `@SpringBootApplication`
+
+**When:** Main class
+**Why:** Starts Spring Boot app
+
+🗣 **Interview line:**
+
+> “It is the entry point of Spring Boot application and enables auto-configuration, component scanning, and configuration.”
+
+---
+
+## 2️⃣ `@Component`
+
+**When:** Utility/helper class
+**Why:** Create Spring-managed bean
+
+🗣
+
+> “Marks a class as a Spring bean.”
+
+---
+
+## 3️⃣ `@Service`
+
+**When:** Business logic
+**Why:** Service layer clarity
+
+🗣
+
+> “Used in service layer to hold business logic.”
+
+---
+
+## 4️⃣ `@Repository`
+
+**When:** DAO layer
+**Why:** DB access + exception translation
+
+🗣
+
+> “Used for database operations and converts DB exceptions to Spring exceptions.”
+
+---
+
+## 5️⃣ `@RestController`
+
+**When:** REST APIs
+**Why:** Return JSON response
+
+🗣
+
+> “Used to build REST APIs and return JSON responses.”
+
+---
+
+## 6️⃣ `@Autowired`
+
+**When:** Inject dependency
+**Why:** Loose coupling
+
+🗣
+
+> “Used to inject dependencies automatically.”
+
+---
+
+## 7️⃣ `@Qualifier`
+
+**When:** Multiple beans
+**Why:** Choose specific bean
+
+🗣
+
+> “Used to resolve ambiguity when multiple beans exist.”
+
+---
+
+## 8️⃣ `@Primary`
+
+**When:** Multiple beans
+**Why:** Default bean
+
+🗣
+
+> “Marks a bean as default among multiple beans.”
+
+---
+
+## 9️⃣ `@Transactional`
+
+**When:** Service layer
+**Why:** Data consistency
+
+🗣
+
+> “Ensures all database operations are executed in a single transaction.”
+
+---
+
+## 🔟 `@Entity`
+
+**When:** JPA entity
+**Why:** Table mapping
+
+🗣
+
+> “Maps Java class to database table.”
+
+---
+
+## 1️⃣1️⃣ `@Id`
+
+**When:** Entity
+**Why:** Primary key
+
+🗣
+
+> “Defines primary key of entity.”
+
+---
+
+## 1️⃣2️⃣ `@OneToMany` / `@ManyToOne`
+
+**When:** Relationships
+**Why:** Table relations
+
+🗣
+
+> “Defines relationship between database tables.”
+
+---
+
+## 1️⃣3️⃣ `@ControllerAdvice`
+
+**When:** Global exception handling
+**Why:** Centralized error handling
+
+🗣
+
+> “Handles exceptions globally in Spring Boot.”
+
+---
+
+## 1️⃣4️⃣ `@ExceptionHandler`
+
+**When:** Handle specific exception
+**Why:** Custom error response
+
+🗣
+
+> “Handles specific exception types.”
+
+---
+
+## 1️⃣5️⃣ `@RequestBody`
+
+**When:** POST/PUT API
+**Why:** Read JSON request
+
+🗣
+
+> “Maps incoming JSON request to Java object.”
+
+---
+
+## 1️⃣6️⃣ `@PathVariable`
+
+**When:** URL value
+**Why:** Dynamic routing
+
+🗣
+
+> “Extracts values from URL path.”
+
+---
+
+## 1️⃣7️⃣ `@RequestParam`
+
+**When:** Query parameter
+**Why:** Optional inputs
+
+🗣
+
+> “Reads query parameters from request.”
+
+---
+
+# 🧠 INTERVIEW CHEAT SUMMARY (🔥)
+
+> **“In Spring Boot, commonly asked annotations are `@SpringBootApplication`, `@RestController`, `@Service`, `@Repository`, `@Autowired`, `@Transactional`, and JPA annotations like `@Entity` and `@Id`.”**
+
+---
+
+# 🎯 BONUS: MOST DANGEROUS FOLLOW-UP QUESTIONS
+
+### ❓ Why `@Transactional` in service layer not DAO?
+
+> Because service layer controls business logic and multiple DB operations.
+
+### ❓ Difference between `@Component` and `@Service`?
+
+> Same behavior, different semantic meaning.
+
+---
+
+
