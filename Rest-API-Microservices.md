@@ -265,3 +265,107 @@ Here are **5 very common microservices interview questions** with **simple, clea
 
 > “Microservices help us scale and deploy features independently, but they require good API design, monitoring, and communication handling.”
 
+Got it — here’s a **clear, interview-ready explanation of REST communication** 👇
+
+---
+
+## 🔗 What is REST Communication?
+
+**REST (Representational State Transfer) communication** is a way for a **client and server to talk to each other over HTTP** using standard rules.
+
+In simple words:
+👉 *Frontend or client sends an HTTP request → Backend processes it → Sends back a response (usually JSON).*
+
+---
+
+## 🧠 How REST Communication Works (Flow)
+
+1. **Client** (Browser / Mobile App / Postman) sends a request
+2. **Request contains**
+
+   * URL (endpoint)
+   * HTTP method (GET, POST, PUT, DELETE)
+   * Headers
+   * Body (optional)
+3. **Server** processes the request
+4. **Server sends a response**
+
+   * Status code (200, 201, 400, 404, 500)
+   * Data (mostly JSON)
+
+---
+
+## 🌐 HTTP Methods Used in REST
+
+| Method | Purpose             | Interview Line      |
+| ------ | ------------------- | ------------------- |
+| GET    | Read data           | Fetch resource      |
+| POST   | Create data         | Create new resource |
+| PUT    | Update full data    | Replace resource    |
+| PATCH  | Update partial data | Modify resource     |
+| DELETE | Remove data         | Delete resource     |
+
+---
+
+## 📦 Example REST Communication
+
+### Request
+
+```
+GET /api/employees/101
+```
+
+### Response
+
+```json
+{
+  "id": 101,
+  "name": "Amruta",
+  "role": "Full Stack Developer"
+}
+```
+
+---
+
+## 🔑 Key Principles of REST (Very Important)
+
+1. **Stateless**
+
+   * Server does not store client session
+   * Each request is independent
+
+2. **Client–Server Architecture**
+
+   * Frontend and backend are separate
+
+3. **Uniform Interface**
+
+   * Same rules for all APIs
+   * Uses HTTP methods & status codes
+
+4. **Resource-Based**
+
+   * Everything is a resource (user, order, product)
+
+---
+
+## 📊 Common HTTP Status Codes
+
+| Code | Meaning               |
+| ---- | --------------------- |
+| 200  | OK                    |
+| 201  | Created               |
+| 400  | Bad Request           |
+| 401  | Unauthorized          |
+| 404  | Not Found             |
+| 500  | Internal Server Error |
+
+---
+
+## 🎯 How to Say in Interview (Perfect Answer)
+
+> “REST communication is a stateless client-server communication that uses HTTP methods like GET, POST, PUT, and DELETE to exchange data, usually in JSON format. Each request contains all the required information, and the server responds with proper status codes and data.”
+
+---
+
+
