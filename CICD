@@ -78,4 +78,89 @@ Imagine a **restaurant**:
 
 ---
 
+Got you 👍
+Here are **TOP 10 CI/CD interview questions** with **short, speakable answers** (perfect for 2–4 years experience).
+
+---
+
+## 🔟 Top 10 CI/CD Interview Questions & Answers
+
+### 1️⃣ What is CI/CD?
+
+**Answer:**
+CI/CD is an automated process that continuously builds, tests, and deploys code, helping teams deliver software faster and with fewer errors.
+
+---
+
+### 2️⃣ What is Continuous Integration?
+
+**Answer:**
+Continuous Integration means frequently merging code into a shared repository where automated builds and tests run on every commit.
+
+---
+
+### 3️⃣ What is Continuous Delivery vs Continuous Deployment?
+
+**Answer:**
+Continuous Delivery requires manual approval before production, while Continuous Deployment automatically releases code to production.
+
+---
+
+### 4️⃣ Why is CI/CD important?
+
+**Answer:**
+It detects bugs early, reduces manual work, improves deployment speed, and increases software reliability.
+
+---
+
+### 5️⃣ What are the stages of a CI/CD pipeline?
+
+**Answer:**
+Code → Build → Test → Package → Deploy → Monitor
+
+---
+
+### 6️⃣ Which CI/CD tools have you used?
+
+**Answer:**
+I have used Jenkins for pipelines, Git for version control, Docker for containerization, and AWS for deployment.
+
+*(Change tools based on your experience)*
+
+---
+
+### 7️⃣ What is a pipeline in CI/CD?
+
+**Answer:**
+A pipeline is a sequence of automated steps that move code from commit to deployment.
+
+---
+
+### 8️⃣ What is rollback in CI/CD?
+
+**Answer:**
+Rollback is reverting to a previous stable version if a deployment fails.
+
+---
+
+### 9️⃣ How do you secure CI/CD pipelines?
+
+**Answer:**
+By using secrets management, access control, environment variables, and scanning for vulnerabilities.
+
+---
+
+### 🔟 What happens if a build fails in CI?
+
+**Answer:**
+The pipeline stops, developers are notified, and the issue is fixed before proceeding further.
+
+---
+
+## ⭐ Bonus one-liner (interviewer loves this)
+
+> CI/CD automates software delivery, making releases faster, safer, and repeatable.
+
+
+
 
