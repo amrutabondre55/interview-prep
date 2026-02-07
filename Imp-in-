@@ -1,0 +1,88 @@
+Perfect question — this is a **very common interview favorite** 👍
+Here’s an **interview-ready answer** you can speak confidently.
+
+---
+
+## Authentication vs Authorization (Interview Answer)
+
+### 🔐 Authentication
+
+**Authentication means verifying who the user is.**
+
+In simple words, it checks **identity**.
+
+Example:
+
+* User enters **username and password**
+* System verifies credentials
+* If correct → user is authenticated
+
+👉 Question it answers:
+**“Who are you?”**
+
+Real example:
+
+> Login to Gmail using email & password.
+
+---
+
+### 🔑 Authorization
+
+**Authorization means verifying what the user is allowed to do.**
+
+It checks **permissions** after login.
+
+Example:
+
+* Admin can add users
+* Normal user can only view data
+
+👉 Question it answers:
+**“What are you allowed to do?”**
+
+Real example:
+
+> In Gmail, user can read emails but cannot access admin settings.
+
+---
+
+## 🔄 Order (Very Important Point)
+
+> **Authentication always happens first, Authorization happens next.**
+
+You cannot authorize a user unless they are authenticated.
+
+---
+
+## 🧠 Real-Time Project Example (Strong Answer)
+
+“In our application, we use **JWT-based authentication**.
+When the user logs in, we validate credentials and generate a JWT token — this is authentication.
+For every API request, the token is validated, and based on user roles like `ROLE_ADMIN` or `ROLE_USER`, access to APIs is controlled — this is authorization.”
+
+---
+
+## 📌 One-Line Difference (Easy to Remember)
+
+| Authentication      | Authorization                |
+| ------------------- | ---------------------------- |
+| Who you are         | What you can do              |
+| Login process       | Permission check             |
+| Username & password | Roles & privileges           |
+| Happens first       | Happens after authentication |
+
+---
+
+## ⚡ Ultra-Short Version (If interviewer wants quick answer)
+
+> “Authentication verifies the user’s identity, while authorization determines what actions the authenticated user is allowed to perform.”
+
+---
+
+If you want, I can also give:
+
+* **Spring Security example**
+* **JWT flow diagram explanation**
+* **Tricky follow-up questions interviewers ask**
+
+Just say the word 😄
