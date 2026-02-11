@@ -198,7 +198,10 @@ A thread in Java goes through the following lifecycle states:
 ### **6. Thread Safety**
 
 - **Thread safety** ensures that shared resources (variables, collections, etc.) are accessed correctly by multiple threads to avoid data inconsistency or corruption.
+- **“Thread safety** means that a piece of code or resource behaves correctly when accessed by multiple threads at the same time, without causing data inconsistency or unexpected results.”
 
+In simple words:
+👉 When multiple threads access shared data, it should not corrupt the data.
 #### **Ways to Achieve Thread Safety**:
 1. **Synchronized Methods/Blocks**: Ensures only one thread can access the block/method at a time.
 2. **Locks (`ReentrantLock`)**: Provides more control over synchronization.
