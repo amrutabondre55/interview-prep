@@ -900,8 +900,113 @@ Here are the **MOST FREQUENTLY ASKED Spring Boot annotations in interviews**, fi
 
 ### ❓ Difference between `@Component` and `@Service`?
 
-> Same behavior, different semantic meaning.
+Perfect 👍 **`@Component`** is a **basic but very important Spring annotation**, and interviewers often expect a **clear, confident explanation**. I’ll explain **what it is, why/when we use it, and exactly how to speak it in an interview**.
 
 ---
+
+## What is `@Component`?
+
+`@Component` is a **Spring stereotype annotation** used to mark a class as a **Spring-managed bean**.
+
+👉 In simple words:
+**`@Component` tells Spring: “Create an object of this class and manage it for me.”**
+
+---
+
+## Why Do We Use `@Component`?
+
+* To enable **Dependency Injection**
+* To let Spring manage object lifecycle
+* To avoid manual object creation using `new`
+
+---
+
+## Basic Example
+
+```java
+@Component
+public class EmailUtil {
+
+    public void sendEmail() {
+        System.out.println("Email sent");
+    }
+}
+```
+
+Spring automatically creates this bean during startup.
+
+---
+
+## How Does `@Component` Work Internally?
+
+1. Spring scans packages (`@ComponentScan`)
+2. Finds classes annotated with `@Component`
+3. Creates bean objects
+4. Stores them in ApplicationContext
+
+---
+
+## When Do We Use `@Component`?
+
+✔ Generic/helper classes
+✔ Utility classes
+✔ Common reusable logic
+✔ When no specific layer fits (not service or repository)
+
+---
+
+## `@Component` vs Other Stereotypes (INTERVIEW FAVORITE ⭐)
+
+| Annotation        | Used For        |
+| ----------------- | --------------- |
+| `@Component`      | Generic classes |
+| `@Service`        | Business logic  |
+| `@Repository`     | Database access |
+| `@Controller`     | MVC controller  |
+| `@RestController` | REST APIs       |
+
+👉 All are **specialized forms of `@Component`**.
+
+---
+
+## Example with Dependency Injection
+
+```java
+@Service
+public class UserService {
+
+    private final EmailUtil emailUtil;
+
+    public UserService(EmailUtil emailUtil) {
+        this.emailUtil = emailUtil;
+    }
+}
+```
+
+---
+
+## Interview-Perfect Answer
+
+> `@Component` is used to mark a class as a Spring bean so that Spring can manage its lifecycle and inject it wherever required.
+
+---
+
+## One-Line HR Answer
+
+> `@Component` makes a class eligible for component scanning and dependency injection.
+
+---
+
+## Common Interview Traps ⚠️
+
+❌ Thinking `@Component` is mandatory for every class
+❌ Using `@Component` instead of `@Service` for business logic
+
+---
+
+## How to Speak in Interview (Confident Style 🎤)
+
+> “We use `@Component` to mark a class as a Spring-managed bean. During application startup, Spring scans and creates objects for such classes, enabling dependency injection.”
+
 
 
