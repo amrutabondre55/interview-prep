@@ -941,5 +941,326 @@ You can say:
 
 > “Volatile is a keyword in Java used to ensure visibility of a variable across multiple threads. It guarantees that any update made by one thread is immediately visible to other threads. However, it does not provide mutual exclusion or atomicity.”
 
+
+
+
+Perfect 👍 Since you prefer **Java code with comments on every line (for interview explanation)**, I’ll give you **frequently asked multi-threading coding questions** with **clean Java code + explanation style**.
+
+These are very commonly asked in 3+ years Java interviews.
+
 ---
+
+# ✅ 1️⃣ Create a Thread using Thread class
+
+### ❓ Interview Question:
+
+Write a Java program to create a thread using the `Thread` class.
+
+```java
+// Create a class that extends Thread
+class MyThread extends Thread {
+
+    // Override run() method (this contains thread logic)
+    public void run() {
+
+        // Print message 5 times
+        for (int i = 1; i <= 5; i++) {
+
+            // Print current thread name and count
+            System.out.println(Thread.currentThread().getName() + " - " + i);
+        }
+    }
+}
+
+// Main class
+public class ThreadExample1 {
+
+    public static void main(String[] args) {
+
+        // Create thread object
+        MyThread t1 = new MyThread();
+
+        // Start thread (internally calls run())
+        t1.start();
+    }
+}
+```
+
+### 🗣 How to say in interview:
+
+> “Here I am extending the Thread class and overriding run() method. When I call start(), JVM creates a new thread and executes run().”
+
+---
+
+# ✅ 2️⃣ Create Thread using Runnable Interface (Most Preferred)
+
+### ❓ Interview Question:
+
+Write a program using Runnable interface.
+
+```java
+// Create class that implements Runnable
+class MyRunnable implements Runnable {
+
+    // Override run() method
+    public void run() {
+
+        // Loop 5 times
+        for (int i = 1; i <= 5; i++) {
+
+            // Print thread name and value
+            System.out.println(Thread.currentThread().getName() + " - " + i);
+        }
+    }
+}
+
+public class ThreadExample2 {
+
+    public static void main(String[] args) {
+
+        // Create Runnable object
+        MyRunnable task = new MyRunnable();
+
+        // Pass runnable object to Thread constructor
+        Thread t1 = new Thread(task);
+
+        // Start thread
+        t1.start();
+    }
+}
+```
+
+### 🗣 Interview Tip:
+
+> “Runnable is preferred because Java does not support multiple inheritance, so extending Thread limits flexibility.”
+
+---
+
+# ✅ 3️⃣ Synchronization Example (Prevent Race Condition)
+
+### ❓ Interview Question:
+
+Write a program where two threads increment a shared counter safely.
+
+```java
+// Shared resource class
+class Counter {
+
+    int count = 0;  // Shared variable
+
+    // Synchronized method to avoid race condition
+    public synchronized void increment() {
+
+        count++;  // Increase counter safely
+    }
+}
+
+public class SyncExample {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        // Create shared counter object
+        Counter counter = new Counter();
+
+        // Create first thread
+        Thread t1 = new Thread(() -> {
+
+            for (int i = 0; i < 1000; i++) {
+
+                counter.increment();  // Call synchronized method
+            }
+        });
+
+        // Create second thread
+        Thread t2 = new Thread(() -> {
+
+            for (int i = 0; i < 1000; i++) {
+
+                counter.increment();
+            }
+        });
+
+        // Start both threads
+        t1.start();
+        t2.start();
+
+        // Wait for threads to finish
+        t1.join();
+        t2.join();
+
+        // Print final count
+        System.out.println("Final Count: " + counter.count);
+    }
+}
+```
+
+### 🗣 Interview Tip:
+
+> “Without synchronized, race condition may occur and final count will not be accurate.”
+
+---
+
+# ✅ 4️⃣ Producer-Consumer Problem (Using wait() and notify())
+
+### ❓ Interview Question:
+
+Implement Producer-Consumer using wait and notify.
+
+```java
+// Shared resource class
+class SharedBuffer {
+
+    private int data;           // Data variable
+    private boolean hasData = false;  // Flag to check availability
+
+    // Produce method
+    public synchronized void produce(int value) throws InterruptedException {
+
+        // Wait if data already exists
+        while (hasData) {
+
+            wait();  // Release lock and wait
+        }
+
+        data = value;  // Set data
+        hasData = true; // Mark data available
+
+        System.out.println("Produced: " + value);
+
+        notify();  // Notify consumer
+    }
+
+    // Consume method
+    public synchronized int consume() throws InterruptedException {
+
+        // Wait if no data available
+        while (!hasData) {
+
+            wait();  // Release lock and wait
+        }
+
+        hasData = false;  // Mark data consumed
+
+        System.out.println("Consumed: " + data);
+
+        notify();  // Notify producer
+
+        return data;
+    }
+}
+```
+
+---
+
+# ✅ 5️⃣ Deadlock Example (Very Frequently Asked)
+
+### ❓ Interview Question:
+
+Write a program that causes deadlock.
+
+```java
+public class DeadlockExample {
+
+    public static void main(String[] args) {
+
+        // Create two lock objects
+        final Object lock1 = new Object();
+        final Object lock2 = new Object();
+
+        // Thread 1
+        Thread t1 = new Thread(() -> {
+
+            synchronized (lock1) {  // Acquire lock1
+
+                System.out.println("Thread 1 acquired lock1");
+
+                synchronized (lock2) {  // Try to acquire lock2
+
+                    System.out.println("Thread 1 acquired lock2");
+                }
+            }
+        });
+
+        // Thread 2
+        Thread t2 = new Thread(() -> {
+
+            synchronized (lock2) {  // Acquire lock2
+
+                System.out.println("Thread 2 acquired lock2");
+
+                synchronized (lock1) {  // Try to acquire lock1
+
+                    System.out.println("Thread 2 acquired lock1");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+```
+
+### 🗣 Interview Tip:
+
+> “Deadlock occurs because threads acquire locks in different order.”
+
+---
+
+# ✅ 6️⃣ ExecutorService Example (Modern Approach – Important for 3+ years)
+
+### ❓ Interview Question:
+
+How to create thread pool?
+
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ExecutorExample {
+
+    public static void main(String[] args) {
+
+        // Create thread pool with 3 threads
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+
+        // Submit 5 tasks
+        for (int i = 1; i <= 5; i++) {
+
+            int taskId = i;
+
+            executor.submit(() -> {
+
+                System.out.println("Executing Task " + taskId +
+                        " by " + Thread.currentThread().getName());
+            });
+        }
+
+        // Shutdown executor
+        executor.shutdown();
+    }
+}
+```
+
+### 🗣 Interview Tip:
+
+> “In real-time projects, we use ExecutorService instead of manually creating threads.”
+
+---
+
+# 🔥 Most Important Coding Topics for 3+ Years
+
+You should definitely prepare:
+
+1. Thread creation (Thread & Runnable)
+2. Synchronization
+3. wait() / notify()
+4. Deadlock
+5. Volatile
+6. ThreadPool (ExecutorService)
+7. Callable & Future
+8. ConcurrentHashMap
+9. CountDownLatch
+10. ReentrantLock
+
 
