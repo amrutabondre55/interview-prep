@@ -154,4 +154,406 @@ Server target url confugured with API Gateway and API gateway give proxy url
 
 > **“After successful login, the client receives a JWT token. This token is sent with every API request in the HTTP header as `Authorization: Bearer <token>`. The backend validates the token, and then allows or denies access to the REST API.”**
 
+Very good 👍 Basic but very important AWS question.
+
+When interviewer asks **“What is EC2?”**, answer like this 👇
+
+---
+
+# ✅ What is EC2?
+
+“EC2 (Elastic Compute Cloud) is a web service provided by AWS that allows us to create and manage virtual servers in the cloud.”
+
+In simple words:
+👉 EC2 is a virtual machine in AWS.
+
+---
+
+# 🔹 Why We Use EC2?
+
+* To host applications
+* To deploy Spring Boot projects
+* To run backend services
+* To install software like Java, MySQL, Nginx
+
+Instead of buying physical servers, we use EC2.
+
+---
+
+# 🔹 Key Features of EC2
+
+✅ Scalable (increase/decrease instance size)
+✅ Secure (Security Groups)
+✅ Pay-as-you-use
+✅ Supports multiple OS (Linux, Windows)
+✅ Auto Scaling support
+
+---
+
+# 🔹 Example (Real-Time Use Case)
+
+“In our project, we deployed the Spring Boot application on an EC2 instance. We installed Java, configured the application, and connected it to RDS.”
+
+---
+
+# 🔹 Important Concepts of EC2
+
+* **AMI** → Amazon Machine Image (template)
+* **Instance Type** → CPU & RAM configuration (t2.micro, t3.medium etc.)
+* **Security Group** → Firewall
+* **Key Pair** → Used to SSH into instance
+* **Elastic IP** → Static public IP
+
+---
+
+# ✅ Short Interview Answer (Best Version)
+
+“EC2 is a scalable virtual server in AWS used to deploy and run applications in the cloud.”
+
+---
+
+# 🎯 Strong 3+ Years Level Line
+
+“We typically deploy applications on EC2 inside a VPC and control access using security groups and IAM roles for better security.”
+
+---
+
+Excellent 👍 IAM is a **must-know** AWS topic for 3+ years.
+
+When interviewer asks **“What is IAM?”**, answer like this 👇
+
+---
+
+# ✅ What is IAM?
+
+“IAM (Identity and Access Management) is an AWS service that helps us securely control access to AWS resources.”
+
+It allows us to manage:
+
+* Who can access AWS
+* What actions they can perform
+* On which resources
+
+---
+
+# 🔹 Why IAM is Important?
+
+Without IAM:
+
+* Anyone could access resources
+* No security control
+
+IAM provides:
+✅ Authentication (who you are)
+✅ Authorization (what you can do)
+
+---
+
+# 🔹 Main Components of IAM
+
+### 1️⃣ Users
+
+* Individual AWS accounts (for developers, admins)
+
+### 2️⃣ Groups
+
+* Collection of users
+* Assign permissions to group instead of individual users
+
+### 3️⃣ Roles
+
+* Used to give temporary access
+* Commonly used with EC2, Lambda
+* No password
+
+### 4️⃣ Policies
+
+* JSON documents
+* Define permissions
+
+Example policy:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": "s3:PutObject",
+  "Resource": "*"
+}
+```
+
+---
+
+# 🔹 Real-Time Example (Very Important for You)
+
+“In our project, we used IAM roles to allow EC2 instances to access S3 securely instead of storing AWS credentials in the application.”
+
+This is a very strong answer.
+
+---
+
+# 🔹 Best Practice
+
+❌ Never hardcode AWS access keys in code
+✅ Use IAM Roles
+
+---
+
+# ✅ Short Interview Answer (Best Version)
+
+“IAM is an AWS service used to manage users, roles, and permissions to securely control access to AWS resources.”
+
+---
+
+# 🎯 Strong 3+ Years Level Line
+
+“In production, we use IAM roles attached to EC2 instances so applications can securely access services like S3 without exposing credentials.”
+
+---
+
+Good 👍 Let’s explain **RDS** properly at 3+ years interview level.
+
+---
+
+# ✅ What is RDS?
+
+“Amazon RDS (Relational Database Service) is a managed relational database service provided by AWS that allows us to set up, operate, and scale databases in the cloud.”
+
+It removes the need to manually manage database servers.
+
+---
+
+# 🔹 What Databases Does RDS Support?
+
+* MySQL
+* PostgreSQL
+* Oracle
+* SQL Server
+* MariaDB
+* Amazon Aurora
+
+---
+
+# 🔹 Why Use RDS Instead of Installing DB on EC2?
+
+If we install database on EC2:
+
+* We manage backups
+* We manage patches
+* We manage scaling
+* We manage high availability
+
+With RDS:
+✅ Automatic backups
+✅ Automated patching
+✅ Multi-AZ (High Availability)
+✅ Read Replicas
+✅ Monitoring with CloudWatch
+✅ Easy scaling
+
+---
+
+# 🔹 Important Features
+
+### 1️⃣ Multi-AZ
+
+* Creates standby instance in another Availability Zone
+* Used for high availability
+* Automatic failover
+
+### 2️⃣ Read Replica
+
+* Used to improve read performance
+* Good for heavy read applications
+
+### 3️⃣ Automated Backups
+
+* Daily snapshots
+* Point-in-time recovery
+
+---
+
+# 🔹 Real-Time Example (For You – Java Dev)
+
+“In our project, we used Amazon RDS MySQL as our primary database. Our Spring Boot application hosted on EC2 was connected to RDS. We enabled Multi-AZ for high availability and automated backups for data safety.”
+
+---
+
+# ✅ Short Interview Answer (Best Version)
+
+“Amazon RDS is a managed relational database service that handles database setup, backups, scaling, and high availability automatically.”
+
+---
+
+# 🎯 Strong 3+ Years Level Line
+
+“RDS reduces operational overhead because AWS manages infrastructure, patching, and failover, allowing developers to focus on application logic.”
+
+---
+
+Excellent 👍 This is a very common full-stack / 3+ years interview question.
+
+Here’s how you should answer clearly and professionally:
+
+---
+
+# ✅ How to Connect Spring Boot to AWS RDS?
+
+“I connect Spring Boot to RDS the same way I connect to any MySQL/PostgreSQL database, but using the RDS endpoint provided by AWS.”
+
+---
+
+# 🔹 Step-by-Step Explanation (Interview Style)
+
+### ✅ Step 1: Create RDS Instance
+
+* Go to AWS Console
+* Launch RDS (MySQL / PostgreSQL etc.)
+* Configure:
+
+  * DB name
+  * Username
+  * Password
+* Enable public access (if needed)
+* Configure Security Group to allow inbound traffic on DB port (3306 for MySQL)
+
+---
+
+### ✅ Step 2: Get RDS Endpoint
+
+After creation, AWS provides:
+
+```
+endpoint: mydb.xxxxxx.ap-south-1.rds.amazonaws.com
+port: 3306
+```
+
+This acts like your database host URL.
+
+---
+
+### ✅ Step 3: Add Dependency in Spring Boot
+
+For MySQL:
+
+```xml
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+</dependency>
+```
+
+---
+
+### ✅ Step 4: Configure application.properties
+
+```properties
+spring.datasource.url=jdbc:mysql://mydb.xxxxxx.ap-south-1.rds.amazonaws.com:3306/mydatabase
+spring.datasource.username=admin
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+---
+
+### ✅ Step 5: Run Application
+
+Spring Boot automatically:
+
+* Creates DataSource
+* Connects to RDS
+* Manages connection pool (HikariCP default)
+
+---
+
+# 🔹 Important Interview Points
+
+✅ Ensure Security Group allows:
+
+* Inbound rule → MySQL (3306)
+* From EC2 IP or your system IP
+
+✅ In production:
+
+* Store credentials in **AWS Secrets Manager**
+* Do not hardcode passwords
+
+---
+
+# ✅ Short Interview Answer (Best Version)
+
+“To connect Spring Boot to RDS, I configure the RDS endpoint in application.properties using JDBC URL, username, and password. I also ensure security group allows database access. Spring Boot automatically creates the datasource and connection pool.”
+
+---
+
+# 🎯 Strong 3+ Years Level Line
+
+“In production, we typically deploy Spring Boot on EC2 or ECS and connect it to RDS within the same VPC for better security, instead of enabling public access.”
+
+Perfect 👍 Let’s explain **AWS S3** in interview style for 3+ years experience.
+
+---
+
+# ✅ What is S3?
+
+**Amazon S3 (Simple Storage Service)** is a fully managed object storage service in AWS.
+
+* Stores **any type of data**: files, images, videos, logs, backups.
+* Highly **scalable, durable, and secure**.
+
+---
+
+# 🔹 Key Features
+
+1. **Durability & Availability**
+
+   * 99.999999999% durability
+   * Multiple copies across Availability Zones
+
+2. **Storage Classes**
+
+   * Standard, Standard-IA, Glacier (archival), Intelligent-Tiering
+
+3. **Versioning**
+
+   * Keep multiple versions of an object
+
+4. **Access Control**
+
+   * IAM policies, bucket policies, ACLs
+
+5. **Static Website Hosting**
+
+   * Can host static HTML/CSS/JS
+
+6. **Integration**
+
+   * Works with EC2, Lambda, RDS, CloudFront
+
+---
+
+# 🔹 Real-Time Example (Java / Spring Boot)
+
+“In our project, we stored user uploaded files and reports in S3.
+We used Spring Boot to upload and download files using the AWS SDK.
+This allowed scalable storage without worrying about server disk limits.”
+
+---
+
+# 🔹 Short Interview Answer (Best Version)
+
+“Amazon S3 is an object storage service that provides scalable, durable, and secure storage for files and data. It can be accessed via REST APIs, SDKs, or AWS console.”
+
+---
+
+# 🎯 Strong 3+ Years Line
+
+“We use S3 for file storage, backup, and integration with other AWS services. For security, we attach IAM roles to EC2 instead of hardcoding credentials.”
+
+---
+
+
+"I have used EC2 to deploy apps, RDS for relational database, S3 for file storage, IAM for security, and CloudWatch for monitoring. In production, we combine these services to make applications scalable, secure, and highly available."
 
