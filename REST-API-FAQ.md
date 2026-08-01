@@ -1175,3 +1175,2377 @@ For almost every technical question, structure your answer like this:
 
 This structure will make your answers sound much more like a **3–4 year experienced developer** rather than someone giving textbook definitions.
 
+Absolutely. Below is an **interview-focused REST API preparation set** for your selected topics. I’ve kept the answers at a **3–4 years Java/Spring Boot experience level** and used exactly your structure:
+
+**What → Why → How → Real Project Example → Interview Answer**
+
+---
+
+# 1. Idempotent Methods
+
+### Q1. What is idempotency in REST API?
+
+### What?
+
+Idempotency means **making the same API request multiple times produces the same final result/state as making it once**.
+
+Commonly:
+
+| HTTP Method | Idempotent?                  |
+| ----------- | ---------------------------- |
+| GET         | ✅ Yes                        |
+| PUT         | ✅ Yes                        |
+| DELETE      | ✅ Yes                        |
+| POST        | ❌ Generally No               |
+| PATCH       | ⚠️ Depends on implementation |
+
+### Why?
+
+It is important when a client retries a request because of a network issue.
+
+For example, if a request times out, the client may send it again.
+
+### How?
+
+For example:
+
+```http
+PUT /api/v1/employees/101
+```
+
+```json
+{
+  "salary": 80000
+}
+```
+
+Sending this request once or five times should result in:
+
+```text
+Employee 101 salary = 80000
+```
+
+### Real Project Example
+
+In your Employee Management API:
+
+```http
+PUT /api/v1/employees/101
+```
+
+updates employee 101.
+
+If the same PUT request is sent multiple times with the same data, the final state remains the same.
+
+### Interview Answer
+
+> "Idempotency means that executing the same request multiple times produces the same intended final state. GET, PUT and DELETE are generally idempotent, while POST is generally not. This is important in distributed systems because clients may retry requests due to network failures."
+
+### 🔥 Follow-up
+
+**Q: Is DELETE always idempotent?**
+
+> "DELETE is considered idempotent because after the resource is deleted, repeating the same delete request doesn't change the final state. However, the HTTP response may differ—for example, the first request could return 204 and a subsequent request could return 404."
+
+---
+
+# 2. Path Variable
+
+### Q2. What is `@PathVariable` in Spring Boot?
+
+### What?
+
+`@PathVariable` is used to extract a value directly from the URL path.
+
+### Why?
+
+We use it when the value identifies a **specific resource**.
+
+### How?
+
+```java
+@GetMapping("/employees/{id}")
+public ResponseEntity<EmployeeResponse> getEmployee(
+        @PathVariable Long id) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployeeById(id)
+    );
+}
+```
+
+URL:
+
+```text
+GET /api/v1/employees/101
+```
+
+Here:
+
+```text
+101 → id
+```
+
+### Real Project Example
+
+Suppose we want employee ID 101:
+
+```text
+GET /api/v1/employees/101
+```
+
+Controller:
+
+```java
+@GetMapping("/{id}")
+public ResponseEntity<EmployeeResponse> getEmployee(
+        @PathVariable Long id) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployeeById(id)
+    );
+}
+```
+
+### Interview Answer
+
+> "`@PathVariable` is used to extract a value from the URL path. I use it when I want to identify a specific resource. For example, `GET /api/v1/employees/101` uses `@PathVariable` to retrieve employee 101."
+
+### 🔥 Follow-up
+
+**Q: Why not use RequestParam for employee ID?**
+
+> "Both are technically possible, but a path variable is more RESTful when the value identifies a specific resource. `/employees/101` clearly represents employee 101, whereas `/employees?id=101` is more suitable when the ID is being treated as a query parameter."
+
+---
+
+# 3. RequestParam
+
+### Q3. What is `@RequestParam`?
+
+### What?
+
+`@RequestParam` extracts parameters from the URL query string.
+
+### Why?
+
+It is commonly used for:
+
+* Search
+* Filtering
+* Pagination
+* Sorting
+* Optional parameters
+
+### How?
+
+```java
+@GetMapping("/search")
+public ResponseEntity<List<EmployeeResponse>> searchEmployees(
+        @RequestParam String name) {
+
+    return ResponseEntity.ok(
+        employeeService.searchEmployees(name)
+    );
+}
+```
+
+Request:
+
+```text
+GET /api/v1/employees/search?name=John
+```
+
+### Real Project Example
+
+Search employees by department:
+
+```text
+GET /api/v1/employees?department=IT
+```
+
+Controller:
+
+```java
+@GetMapping
+public ResponseEntity<List<EmployeeResponse>> getEmployees(
+        @RequestParam(required = false) String department) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployees(department)
+    );
+}
+```
+
+### Interview Answer
+
+> "`@RequestParam` is used to read query parameters from the URL. I generally use it for filtering, searching, pagination and sorting. For example, `GET /api/v1/employees?department=IT` uses `@RequestParam` to filter employees by department."
+
+### 🔥 Follow-up
+
+**Q: What does `required=false` mean?**
+
+```java
+@RequestParam(required = false) String department
+```
+
+> "It means the parameter is optional. If the client doesn't send `department`, Spring won't throw a missing parameter exception, and the value will be null."
+
+---
+
+# 4. RequestBody
+
+### Q4. What is `@RequestBody`?
+
+### What?
+
+`@RequestBody` is used to read JSON or other request payload data and convert it into a Java object.
+
+### Why?
+
+We use it mainly for APIs where the client sends data to create or update resources.
+
+### How?
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @RequestBody EmployeeRequest request) {
+
+    EmployeeResponse response =
+            employeeService.createEmployee(request);
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(response);
+}
+```
+
+Request:
+
+```http
+POST /api/v1/employees
+```
+
+```json
+{
+  "employeeCode": "EMP101",
+  "firstName": "John",
+  "lastName": "Smith",
+  "email": "john@test.com",
+  "department": "IT",
+  "salary": 80000
+}
+```
+
+### Real Project Example
+
+React/Postman sends JSON to Spring Boot.
+
+```text
+React
+ ↓
+JSON Request
+ ↓
+@RequestBody
+ ↓
+EmployeeRequest DTO
+ ↓
+Service
+ ↓
+Database
+```
+
+### Interview Answer
+
+> "`@RequestBody` is used to bind the HTTP request body, usually JSON, to a Java object. In my Employee Management API, I use it with request DTOs for POST and PUT APIs. I also combine it with `@Valid` to validate the incoming request."
+
+### 🔥 Follow-up
+
+**Q: Why use DTO with `@RequestBody` instead of Entity?**
+
+> "I prefer DTOs because they prevent exposing the database entity directly, allow us to control the API contract, provide request-specific validation and reduce coupling between the API and database model."
+
+---
+
+# 5. PathVariable vs RequestParam vs RequestBody
+
+### Q5. Explain the difference between these three.
+
+### What?
+
+They receive different types of request data.
+
+### Why?
+
+Choosing the correct one makes the API design clear and RESTful.
+
+### How?
+
+| Annotation      | Example          | Purpose                  |
+| --------------- | ---------------- | ------------------------ |
+| `@PathVariable` | `/employees/101` | Identify resource        |
+| `@RequestParam` | `?department=IT` | Filter/search/pagination |
+| `@RequestBody`  | JSON payload     | Create/update data       |
+
+### Real Project Example
+
+Get employee:
+
+```text
+GET /api/v1/employees/101
+```
+
+```java
+@PathVariable Long id
+```
+
+Filter:
+
+```text
+GET /api/v1/employees?department=IT
+```
+
+```java
+@RequestParam String department
+```
+
+Create:
+
+```text
+POST /api/v1/employees
+```
+
+```java
+@RequestBody EmployeeRequest request
+```
+
+### Interview Answer
+
+> "`@PathVariable` is used when the value is part of the resource URL, `@RequestParam` is used for query parameters such as filtering, searching and pagination, and `@RequestBody` is used to receive structured request data such as JSON for create or update operations."
+
+---
+
+# 6. Exception Handling
+
+### Q6. How do you handle exceptions in Spring Boot REST APIs?
+
+### What?
+
+Exception handling means managing application errors and returning meaningful HTTP responses to clients.
+
+### Why?
+
+We don't want to expose stack traces or internal implementation details to clients.
+
+It also keeps our Controllers clean.
+
+### How?
+
+I use:
+
+```java
+@RestControllerAdvice
+```
+
+and:
+
+```java
+@ExceptionHandler
+```
+
+Example:
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEmployeeNotFound(
+            EmployeeNotFoundException ex) {
+
+        ErrorResponse error = new ErrorResponse(
+                false,
+                ex.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(error);
+    }
+}
+```
+
+Custom exception:
+
+```java
+public class EmployeeNotFoundException
+        extends RuntimeException {
+
+    public EmployeeNotFoundException(Long id) {
+        super("Employee not found with id: " + id);
+    }
+}
+```
+
+### Real Project Example
+
+Request:
+
+```text
+GET /api/v1/employees/999
+```
+
+If employee 999 doesn't exist:
+
+```text
+Service
+ ↓
+EmployeeNotFoundException
+ ↓
+GlobalExceptionHandler
+ ↓
+404 NOT FOUND
+```
+
+Response:
+
+```json
+{
+  "success": false,
+  "message": "Employee not found with id: 999"
+}
+```
+
+### Interview Answer
+
+> "In my Spring Boot application, I use centralized exception handling with `@RestControllerAdvice` and `@ExceptionHandler`. I create custom exceptions for business scenarios such as employee not found or duplicate employee email. The global handler converts these exceptions into consistent error responses with appropriate HTTP status codes."
+
+### 🔥 Follow-up
+
+**Q: Why not use try-catch in every Controller?**
+
+> "That would duplicate code across Controllers and make them difficult to maintain. Centralized exception handling keeps business code clean and provides a consistent error response structure."
+
+---
+
+# 7. Exception Handling Scenario
+
+### Q7. What happens if Employee ID doesn't exist?
+
+### What?
+
+We should return a meaningful `404 NOT FOUND`.
+
+### Why?
+
+The client requested a resource that doesn't exist.
+
+### How?
+
+Repository:
+
+```java
+Optional<Employee> employee =
+        employeeRepository.findById(id);
+```
+
+Service:
+
+```java
+return employeeRepository.findById(id)
+        .orElseThrow(() ->
+            new EmployeeNotFoundException(id));
+```
+
+Global handler:
+
+```java
+@ExceptionHandler(EmployeeNotFoundException.class)
+public ResponseEntity<ErrorResponse> handleNotFound(
+        EmployeeNotFoundException ex) {
+
+    return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(new ErrorResponse(
+                    false,
+                    ex.getMessage()
+            ));
+}
+```
+
+### Real Project Example
+
+```text
+GET /api/v1/employees/999
+```
+
+Response:
+
+```text
+404 NOT FOUND
+```
+
+### Interview Answer
+
+> "If the employee doesn't exist, I don't return null from the service. I throw a custom `EmployeeNotFoundException`, which is handled centrally by `@RestControllerAdvice` and converted into a 404 response."
+
+---
+
+# 8. Validation
+
+### Q8. How do you validate REST API requests?
+
+### What?
+
+Validation ensures incoming data follows the required business and data rules.
+
+### Why?
+
+It prevents invalid data from reaching the Service and Database layers.
+
+### How?
+
+DTO:
+
+```java
+public class EmployeeRequest {
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @Email
+    @NotBlank
+    private String email;
+
+    @Positive
+    private BigDecimal salary;
+}
+```
+
+Controller:
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @Valid @RequestBody EmployeeRequest request) {
+
+    ...
+}
+```
+
+### Real Project Example
+
+Client sends:
+
+```json
+{
+  "firstName": "",
+  "email": "wrong-email",
+  "salary": -100
+}
+```
+
+Validation fails.
+
+The request doesn't proceed to business logic.
+
+### Interview Answer
+
+> "I use Jakarta Bean Validation annotations such as `@NotBlank`, `@Email`, `@Positive` and `@Size` on request DTOs. I trigger validation using `@Valid` in the Controller and handle validation exceptions centrally using `@RestControllerAdvice`."
+
+---
+
+# 9. What is `@Valid`?
+
+### What?
+
+`@Valid` tells Spring to validate the object against its validation annotations.
+
+### Why?
+
+Without triggering validation, annotations such as `@NotBlank` won't automatically reject the request.
+
+### How?
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @Valid @RequestBody EmployeeRequest request) {
+    
+    ...
+}
+```
+
+DTO:
+
+```java
+@NotBlank
+private String firstName;
+```
+
+### Real Project Example
+
+Request:
+
+```json
+{
+  "firstName": ""
+}
+```
+
+Spring detects the validation failure.
+
+### Interview Answer
+
+> "`@Valid` triggers Bean Validation on the request object. I use it with `@RequestBody` DTOs so that invalid data is rejected before it reaches the service layer."
+
+---
+
+# 10. How do you return validation errors?
+
+### What?
+
+We should return a structured and client-friendly error response.
+
+### Why?
+
+The frontend should know which fields are invalid.
+
+### How?
+
+Example:
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": {
+    "email": "Invalid email",
+    "firstName": "First name is required"
+  }
+}
+```
+
+Handle:
+
+```java
+@ExceptionHandler(MethodArgumentNotValidException.class)
+```
+
+### Real Project Example
+
+React submits:
+
+```json
+{
+  "firstName": "",
+  "email": "abc"
+}
+```
+
+Backend returns:
+
+```text
+400 BAD REQUEST
+```
+
+with field-level errors.
+
+### Interview Answer
+
+> "I handle `MethodArgumentNotValidException` globally and extract field-level validation errors. I return a structured 400 Bad Request response so that the frontend can clearly identify which fields need correction."
+
+---
+
+# 11. Pagination
+
+### Q11. What is pagination in REST API?
+
+### What?
+
+Pagination means returning data in smaller pages instead of returning the complete dataset.
+
+### Why?
+
+Suppose we have:
+
+```text
+1 million employees
+```
+
+Returning all employees at once can cause:
+
+* High memory usage
+* Slow response
+* Large network payload
+* Database performance issues
+
+### How?
+
+Request:
+
+```text
+GET /api/v1/employees?page=0&size=10
+```
+
+Controller:
+
+```java
+@GetMapping
+public ResponseEntity<Page<EmployeeResponse>> getEmployees(
+        @PageableDefault(size = 10)
+        Pageable pageable) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployees(pageable)
+    );
+}
+```
+
+Repository:
+
+```java
+Page<Employee> findAll(Pageable pageable);
+```
+
+### Real Project Example
+
+```text
+GET /api/v1/employees?page=0&size=10
+```
+
+means:
+
+```text
+Page = 0
+Size = 10
+```
+
+The database returns only the required records.
+
+### Interview Answer
+
+> "I use Spring Data JPA's `Pageable` and `Page` to implement pagination. Instead of loading all employees, I retrieve a fixed number of records per page. This reduces memory usage, database load and response size."
+
+---
+
+# 12. Pagination + Sorting
+
+### Q12. How do you implement sorting with pagination?
+
+### What?
+
+We can combine `Pageable` with `Sort`.
+
+### Why?
+
+The client may want results in a particular order.
+
+### How?
+
+Request:
+
+```text
+GET /api/v1/employees?page=0&size=10&sort=salary,desc
+```
+
+Spring:
+
+```java
+Pageable pageable =
+        PageRequest.of(
+                0,
+                10,
+                Sort.by("salary").descending()
+        );
+```
+
+### Real Project Example
+
+Client asks:
+
+> Give me the first 10 employees with the highest salary.
+
+Request:
+
+```text
+GET /api/v1/employees?page=0&size=10&sort=salary,desc
+```
+
+### Interview Answer
+
+> "Spring Data allows me to combine pagination and sorting using `Pageable`. For example, I can expose `page`, `size` and `sort` parameters so clients can retrieve paginated employees ordered by salary, joining date or another allowed field."
+
+---
+
+# 13. What happens if client requests page size 10,000?
+
+### What?
+
+The client is requesting a very large page.
+
+### Why?
+
+Without limits, a client could cause performance problems.
+
+### How?
+
+I can enforce a maximum page size.
+
+For example:
+
+```text
+Maximum = 100
+```
+
+If client sends:
+
+```text
+size=10000
+```
+
+we cap it to 100 or reject the request.
+
+### Real Project Example
+
+```text
+GET /api/v1/employees?page=0&size=10000
+```
+
+Instead of allowing 10,000 records:
+
+```text
+Maximum allowed = 100
+```
+
+### Interview Answer
+
+> "I would not allow unlimited page sizes. I would configure a maximum page size, for example 100, to protect the API and database from large queries. I would also validate page numbers and sorting fields."
+
+---
+
+# 14. Swagger / OpenAPI
+
+### Q14. What is Swagger/OpenAPI?
+
+### What?
+
+**OpenAPI** is a specification for describing REST APIs.
+
+**Swagger UI** provides an interactive web interface for viewing and testing the API documentation.
+
+### Why?
+
+It helps:
+
+* Developers understand APIs
+* Frontend/backend teams collaborate
+* Test endpoints
+* Document request/response models
+* Understand parameters and status codes
+
+### How?
+
+In Spring Boot, we commonly use **springdoc-openapi**.
+
+Dependency:
+
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.9</version>
+</dependency>
+```
+
+Then Spring Boot can generate OpenAPI documentation from the application's API definitions.
+
+### Real Project Example
+
+Your Employee API:
+
+```text
+GET    /api/v1/employees
+GET    /api/v1/employees/{id}
+POST   /api/v1/employees
+PUT    /api/v1/employees/{id}
+DELETE /api/v1/employees/{id}
+```
+
+Swagger UI allows developers to see and test these endpoints.
+
+### Interview Answer
+
+> "I use OpenAPI with Swagger UI to document REST APIs. It provides an interactive interface where developers can understand endpoints, request parameters, request bodies, response models and status codes, and can also test APIs during development."
+
+---
+
+# 15. Swagger vs Postman
+
+### Q15. What is the difference between Swagger and Postman?
+
+### What?
+
+Both can be used to interact with APIs, but their primary purposes are different.
+
+### Why?
+
+Swagger is more focused on **API documentation and API contract**, while Postman is more focused on **API testing and collections/workflows**.
+
+### How?
+
+Swagger:
+
+```text
+API Documentation
+       ↓
+Swagger UI
+       ↓
+Try API
+```
+
+Postman:
+
+```text
+API Endpoint
+       ↓
+Request
+       ↓
+Headers / Body / Auth
+       ↓
+Response
+       ↓
+Tests
+```
+
+### Real Project Example
+
+For your Employee API:
+
+Swagger can document:
+
+```text
+POST /api/v1/employees
+```
+
+and show the request/response schema.
+
+Postman can be used to test:
+
+```text
+POST
+GET
+PUT
+DELETE
+```
+
+and create a collection containing multiple scenarios.
+
+### Interview Answer
+
+> "Swagger/OpenAPI is primarily used for API documentation and defining the API contract, while Postman is primarily used for API testing and creating reusable request collections. In a project, I can use Swagger for documentation and quick endpoint verification and Postman for detailed functional and negative testing."
+
+---
+
+# 🔥 16. Very Important Combined Interview Question
+
+### Q16. Explain your Employee REST API Controller.
+
+Suppose interviewer asks:
+
+> **"Show me how you would design your Employee Controller."**
+
+### What?
+
+The Controller handles HTTP requests and maps URLs to appropriate operations.
+
+### Why?
+
+It should focus on the **HTTP layer** and delegate business logic to the Service.
+
+### How?
+
+Example:
+
+```java
+@RestController
+@RequestMapping("/api/v1/employees")
+public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployee(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                employeeService.getEmployeeById(id)
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<EmployeeResponse>> getEmployees(
+            @RequestParam(required = false) String department,
+            Pageable pageable) {
+
+        return ResponseEntity.ok(
+                employeeService.getEmployees(
+                        department, pageable
+                )
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<EmployeeResponse> createEmployee(
+            @Valid @RequestBody EmployeeRequest request) {
+
+        EmployeeResponse response =
+                employeeService.createEmployee(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> updateEmployee(
+            @PathVariable Long id,
+            @Valid @RequestBody EmployeeRequest request) {
+
+        return ResponseEntity.ok(
+                employeeService.updateEmployee(id, request)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEmployee(
+            @PathVariable Long id) {
+
+        employeeService.deleteEmployee(id);
+
+        return ResponseEntity.noContent().build();
+    }
+}
+```
+
+### Real Project Flow
+
+```text
+React / Postman
+       ↓
+GET /api/v1/employees/101
+       ↓
+EmployeeController
+       ↓
+@PathVariable → 101
+       ↓
+EmployeeService
+       ↓
+EmployeeRepository
+       ↓
+PostgreSQL
+       ↓
+Employee Entity
+       ↓
+EmployeeResponse DTO
+       ↓
+200 OK
+```
+
+### Interview Answer
+
+> "In my Employee Management project, I use a versioned base URL such as `/api/v1/employees`. The Controller is responsible only for handling HTTP requests, request parameters, path variables, request-body validation and HTTP responses. I use `@PathVariable` for resource IDs, `@RequestParam` for filtering and pagination, and `@RequestBody` with `@Valid` for create and update requests. The Controller delegates business logic to the Service layer and returns appropriate HTTP status codes. I don't put business logic or database operations directly in the Controller."
+
+---
+
+# ⭐ Most Frequently Asked Follow-ups
+
+For your **3–4 year interview**, prepare these especially well:
+
+### Idempotency
+
+> **"Why is PUT idempotent but POST generally isn't?"**
+
+### PathVariable
+
+> **"When would you use PathVariable instead of RequestParam?"**
+
+### RequestParam
+
+> **"How do you make RequestParam optional?"**
+
+### RequestBody
+
+> **"Can GET have RequestBody?"**
+
+A safe interview answer:
+
+> "Although HTTP doesn't universally prohibit a GET body, it is generally not recommended because clients, proxies and servers may not handle it consistently. For GET, I prefer path variables or query parameters."
+
+### Exception Handling
+
+> **"Why use `@RestControllerAdvice`?"**
+
+### Validation
+
+> **"What is the difference between `@Valid` and `@Validated`?"**
+
+### Pagination
+
+> **"How would you handle 10 million records?"**
+
+### Swagger
+
+> **"Swagger vs Postman?"**
+
+---
+
+# 🎯 Quick Revision Sheet
+
+Before your interview, remember this:
+
+```text
+@PathVariable
+→ Resource identification
+→ /employees/101
+
+@RequestParam
+→ Filtering / Search / Pagination
+→ /employees?department=IT
+
+@RequestBody
+→ JSON request data
+→ POST /employees
+
+@Valid
+→ Request validation
+
+@RestControllerAdvice
+→ Global exception handling
+
+Pageable
+→ Pagination + Sorting
+
+OpenAPI / Swagger
+→ API documentation + interactive testing
+
+GET
+→ Retrieve
+→ Idempotent
+
+POST
+→ Create
+→ Generally NOT idempotent
+
+PUT
+→ Full update/replacement
+→ Idempotent
+
+PATCH
+→ Partial update
+→ Depends on implementation
+
+DELETE
+→ Delete
+→ Idempotent
+```
+
+### ⭐ One strong answer for your interview
+
+If the interviewer asks **"What REST API best practices do you follow?"**, you can combine almost everything:
+
+> **"In my Spring Boot REST APIs, I follow resource-based and versioned URLs such as `/api/v1/employees`. I use the appropriate HTTP methods and status codes, DTOs instead of exposing entities, constructor injection, Bean Validation with `@Valid`, centralized exception handling using `@RestControllerAdvice`, and pagination and sorting for large datasets. I use `@PathVariable` for resource identification, `@RequestParam` for filtering and pagination, and `@RequestBody` for request payloads. I also document APIs using OpenAPI/Swagger, secure APIs using Spring Security where required, and write unit and integration tests for positive and negative scenarios."**
+Absolutely. Below is an **interview-focused REST API preparation set** for your selected topics. I’ve kept the answers at a **3–4 years Java/Spring Boot experience level** and used exactly your structure:
+
+**What → Why → How → Real Project Example → Interview Answer**
+
+---
+
+# 1. Idempotent Methods
+
+### Q1. What is idempotency in REST API?
+
+### What?
+
+Idempotency means **making the same API request multiple times produces the same final result/state as making it once**.
+
+Commonly:
+
+| HTTP Method | Idempotent?                  |
+| ----------- | ---------------------------- |
+| GET         | ✅ Yes                        |
+| PUT         | ✅ Yes                        |
+| DELETE      | ✅ Yes                        |
+| POST        | ❌ Generally No               |
+| PATCH       | ⚠️ Depends on implementation |
+
+### Why?
+
+It is important when a client retries a request because of a network issue.
+
+For example, if a request times out, the client may send it again.
+
+### How?
+
+For example:
+
+```http
+PUT /api/v1/employees/101
+```
+
+```json
+{
+  "salary": 80000
+}
+```
+
+Sending this request once or five times should result in:
+
+```text
+Employee 101 salary = 80000
+```
+
+### Real Project Example
+
+In your Employee Management API:
+
+```http
+PUT /api/v1/employees/101
+```
+
+updates employee 101.
+
+If the same PUT request is sent multiple times with the same data, the final state remains the same.
+
+### Interview Answer
+
+> "Idempotency means that executing the same request multiple times produces the same intended final state. GET, PUT and DELETE are generally idempotent, while POST is generally not. This is important in distributed systems because clients may retry requests due to network failures."
+
+### 🔥 Follow-up
+
+**Q: Is DELETE always idempotent?**
+
+> "DELETE is considered idempotent because after the resource is deleted, repeating the same delete request doesn't change the final state. However, the HTTP response may differ—for example, the first request could return 204 and a subsequent request could return 404."
+
+---
+
+# 2. Path Variable
+
+### Q2. What is `@PathVariable` in Spring Boot?
+
+### What?
+
+`@PathVariable` is used to extract a value directly from the URL path.
+
+### Why?
+
+We use it when the value identifies a **specific resource**.
+
+### How?
+
+```java
+@GetMapping("/employees/{id}")
+public ResponseEntity<EmployeeResponse> getEmployee(
+        @PathVariable Long id) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployeeById(id)
+    );
+}
+```
+
+URL:
+
+```text
+GET /api/v1/employees/101
+```
+
+Here:
+
+```text
+101 → id
+```
+
+### Real Project Example
+
+Suppose we want employee ID 101:
+
+```text
+GET /api/v1/employees/101
+```
+
+Controller:
+
+```java
+@GetMapping("/{id}")
+public ResponseEntity<EmployeeResponse> getEmployee(
+        @PathVariable Long id) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployeeById(id)
+    );
+}
+```
+
+### Interview Answer
+
+> "`@PathVariable` is used to extract a value from the URL path. I use it when I want to identify a specific resource. For example, `GET /api/v1/employees/101` uses `@PathVariable` to retrieve employee 101."
+
+### 🔥 Follow-up
+
+**Q: Why not use RequestParam for employee ID?**
+
+> "Both are technically possible, but a path variable is more RESTful when the value identifies a specific resource. `/employees/101` clearly represents employee 101, whereas `/employees?id=101` is more suitable when the ID is being treated as a query parameter."
+
+---
+
+# 3. RequestParam
+
+### Q3. What is `@RequestParam`?
+
+### What?
+
+`@RequestParam` extracts parameters from the URL query string.
+
+### Why?
+
+It is commonly used for:
+
+* Search
+* Filtering
+* Pagination
+* Sorting
+* Optional parameters
+
+### How?
+
+```java
+@GetMapping("/search")
+public ResponseEntity<List<EmployeeResponse>> searchEmployees(
+        @RequestParam String name) {
+
+    return ResponseEntity.ok(
+        employeeService.searchEmployees(name)
+    );
+}
+```
+
+Request:
+
+```text
+GET /api/v1/employees/search?name=John
+```
+
+### Real Project Example
+
+Search employees by department:
+
+```text
+GET /api/v1/employees?department=IT
+```
+
+Controller:
+
+```java
+@GetMapping
+public ResponseEntity<List<EmployeeResponse>> getEmployees(
+        @RequestParam(required = false) String department) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployees(department)
+    );
+}
+```
+
+### Interview Answer
+
+> "`@RequestParam` is used to read query parameters from the URL. I generally use it for filtering, searching, pagination and sorting. For example, `GET /api/v1/employees?department=IT` uses `@RequestParam` to filter employees by department."
+
+### 🔥 Follow-up
+
+**Q: What does `required=false` mean?**
+
+```java
+@RequestParam(required = false) String department
+```
+
+> "It means the parameter is optional. If the client doesn't send `department`, Spring won't throw a missing parameter exception, and the value will be null."
+
+---
+
+# 4. RequestBody
+
+### Q4. What is `@RequestBody`?
+
+### What?
+
+`@RequestBody` is used to read JSON or other request payload data and convert it into a Java object.
+
+### Why?
+
+We use it mainly for APIs where the client sends data to create or update resources.
+
+### How?
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @RequestBody EmployeeRequest request) {
+
+    EmployeeResponse response =
+            employeeService.createEmployee(request);
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(response);
+}
+```
+
+Request:
+
+```http
+POST /api/v1/employees
+```
+
+```json
+{
+  "employeeCode": "EMP101",
+  "firstName": "John",
+  "lastName": "Smith",
+  "email": "john@test.com",
+  "department": "IT",
+  "salary": 80000
+}
+```
+
+### Real Project Example
+
+React/Postman sends JSON to Spring Boot.
+
+```text
+React
+ ↓
+JSON Request
+ ↓
+@RequestBody
+ ↓
+EmployeeRequest DTO
+ ↓
+Service
+ ↓
+Database
+```
+
+### Interview Answer
+
+> "`@RequestBody` is used to bind the HTTP request body, usually JSON, to a Java object. In my Employee Management API, I use it with request DTOs for POST and PUT APIs. I also combine it with `@Valid` to validate the incoming request."
+
+### 🔥 Follow-up
+
+**Q: Why use DTO with `@RequestBody` instead of Entity?**
+
+> "I prefer DTOs because they prevent exposing the database entity directly, allow us to control the API contract, provide request-specific validation and reduce coupling between the API and database model."
+
+---
+
+# 5. PathVariable vs RequestParam vs RequestBody
+
+### Q5. Explain the difference between these three.
+
+### What?
+
+They receive different types of request data.
+
+### Why?
+
+Choosing the correct one makes the API design clear and RESTful.
+
+### How?
+
+| Annotation      | Example          | Purpose                  |
+| --------------- | ---------------- | ------------------------ |
+| `@PathVariable` | `/employees/101` | Identify resource        |
+| `@RequestParam` | `?department=IT` | Filter/search/pagination |
+| `@RequestBody`  | JSON payload     | Create/update data       |
+
+### Real Project Example
+
+Get employee:
+
+```text
+GET /api/v1/employees/101
+```
+
+```java
+@PathVariable Long id
+```
+
+Filter:
+
+```text
+GET /api/v1/employees?department=IT
+```
+
+```java
+@RequestParam String department
+```
+
+Create:
+
+```text
+POST /api/v1/employees
+```
+
+```java
+@RequestBody EmployeeRequest request
+```
+
+### Interview Answer
+
+> "`@PathVariable` is used when the value is part of the resource URL, `@RequestParam` is used for query parameters such as filtering, searching and pagination, and `@RequestBody` is used to receive structured request data such as JSON for create or update operations."
+
+---
+
+# 6. Exception Handling
+
+### Q6. How do you handle exceptions in Spring Boot REST APIs?
+
+### What?
+
+Exception handling means managing application errors and returning meaningful HTTP responses to clients.
+
+### Why?
+
+We don't want to expose stack traces or internal implementation details to clients.
+
+It also keeps our Controllers clean.
+
+### How?
+
+I use:
+
+```java
+@RestControllerAdvice
+```
+
+and:
+
+```java
+@ExceptionHandler
+```
+
+Example:
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEmployeeNotFound(
+            EmployeeNotFoundException ex) {
+
+        ErrorResponse error = new ErrorResponse(
+                false,
+                ex.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(error);
+    }
+}
+```
+
+Custom exception:
+
+```java
+public class EmployeeNotFoundException
+        extends RuntimeException {
+
+    public EmployeeNotFoundException(Long id) {
+        super("Employee not found with id: " + id);
+    }
+}
+```
+
+### Real Project Example
+
+Request:
+
+```text
+GET /api/v1/employees/999
+```
+
+If employee 999 doesn't exist:
+
+```text
+Service
+ ↓
+EmployeeNotFoundException
+ ↓
+GlobalExceptionHandler
+ ↓
+404 NOT FOUND
+```
+
+Response:
+
+```json
+{
+  "success": false,
+  "message": "Employee not found with id: 999"
+}
+```
+
+### Interview Answer
+
+> "In my Spring Boot application, I use centralized exception handling with `@RestControllerAdvice` and `@ExceptionHandler`. I create custom exceptions for business scenarios such as employee not found or duplicate employee email. The global handler converts these exceptions into consistent error responses with appropriate HTTP status codes."
+
+### 🔥 Follow-up
+
+**Q: Why not use try-catch in every Controller?**
+
+> "That would duplicate code across Controllers and make them difficult to maintain. Centralized exception handling keeps business code clean and provides a consistent error response structure."
+
+---
+
+# 7. Exception Handling Scenario
+
+### Q7. What happens if Employee ID doesn't exist?
+
+### What?
+
+We should return a meaningful `404 NOT FOUND`.
+
+### Why?
+
+The client requested a resource that doesn't exist.
+
+### How?
+
+Repository:
+
+```java
+Optional<Employee> employee =
+        employeeRepository.findById(id);
+```
+
+Service:
+
+```java
+return employeeRepository.findById(id)
+        .orElseThrow(() ->
+            new EmployeeNotFoundException(id));
+```
+
+Global handler:
+
+```java
+@ExceptionHandler(EmployeeNotFoundException.class)
+public ResponseEntity<ErrorResponse> handleNotFound(
+        EmployeeNotFoundException ex) {
+
+    return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(new ErrorResponse(
+                    false,
+                    ex.getMessage()
+            ));
+}
+```
+
+### Real Project Example
+
+```text
+GET /api/v1/employees/999
+```
+
+Response:
+
+```text
+404 NOT FOUND
+```
+
+### Interview Answer
+
+> "If the employee doesn't exist, I don't return null from the service. I throw a custom `EmployeeNotFoundException`, which is handled centrally by `@RestControllerAdvice` and converted into a 404 response."
+
+---
+
+# 8. Validation
+
+### Q8. How do you validate REST API requests?
+
+### What?
+
+Validation ensures incoming data follows the required business and data rules.
+
+### Why?
+
+It prevents invalid data from reaching the Service and Database layers.
+
+### How?
+
+DTO:
+
+```java
+public class EmployeeRequest {
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @Email
+    @NotBlank
+    private String email;
+
+    @Positive
+    private BigDecimal salary;
+}
+```
+
+Controller:
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @Valid @RequestBody EmployeeRequest request) {
+
+    ...
+}
+```
+
+### Real Project Example
+
+Client sends:
+
+```json
+{
+  "firstName": "",
+  "email": "wrong-email",
+  "salary": -100
+}
+```
+
+Validation fails.
+
+The request doesn't proceed to business logic.
+
+### Interview Answer
+
+> "I use Jakarta Bean Validation annotations such as `@NotBlank`, `@Email`, `@Positive` and `@Size` on request DTOs. I trigger validation using `@Valid` in the Controller and handle validation exceptions centrally using `@RestControllerAdvice`."
+
+---
+
+# 9. What is `@Valid`?
+
+### What?
+
+`@Valid` tells Spring to validate the object against its validation annotations.
+
+### Why?
+
+Without triggering validation, annotations such as `@NotBlank` won't automatically reject the request.
+
+### How?
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @Valid @RequestBody EmployeeRequest request) {
+    
+    ...
+}
+```
+
+DTO:
+
+```java
+@NotBlank
+private String firstName;
+```
+
+### Real Project Example
+
+Request:
+
+```json
+{
+  "firstName": ""
+}
+```
+
+Spring detects the validation failure.
+
+### Interview Answer
+
+> "`@Valid` triggers Bean Validation on the request object. I use it with `@RequestBody` DTOs so that invalid data is rejected before it reaches the service layer."
+
+---
+
+# 10. How do you return validation errors?
+
+### What?
+
+We should return a structured and client-friendly error response.
+
+### Why?
+
+The frontend should know which fields are invalid.
+
+### How?
+
+Example:
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": {
+    "email": "Invalid email",
+    "firstName": "First name is required"
+  }
+}
+```
+
+Handle:
+
+```java
+@ExceptionHandler(MethodArgumentNotValidException.class)
+```
+
+### Real Project Example
+
+React submits:
+
+```json
+{
+  "firstName": "",
+  "email": "abc"
+}
+```
+
+Backend returns:
+
+```text
+400 BAD REQUEST
+```
+
+with field-level errors.
+
+### Interview Answer
+
+> "I handle `MethodArgumentNotValidException` globally and extract field-level validation errors. I return a structured 400 Bad Request response so that the frontend can clearly identify which fields need correction."
+
+---
+
+# 11. Pagination
+
+### Q11. What is pagination in REST API?
+
+### What?
+
+Pagination means returning data in smaller pages instead of returning the complete dataset.
+
+### Why?
+
+Suppose we have:
+
+```text
+1 million employees
+```
+
+Returning all employees at once can cause:
+
+* High memory usage
+* Slow response
+* Large network payload
+* Database performance issues
+
+### How?
+
+Request:
+
+```text
+GET /api/v1/employees?page=0&size=10
+```
+
+Controller:
+
+```java
+@GetMapping
+public ResponseEntity<Page<EmployeeResponse>> getEmployees(
+        @PageableDefault(size = 10)
+        Pageable pageable) {
+
+    return ResponseEntity.ok(
+        employeeService.getEmployees(pageable)
+    );
+}
+```
+
+Repository:
+
+```java
+Page<Employee> findAll(Pageable pageable);
+```
+
+### Real Project Example
+
+```text
+GET /api/v1/employees?page=0&size=10
+```
+
+means:
+
+```text
+Page = 0
+Size = 10
+```
+
+The database returns only the required records.
+
+### Interview Answer
+
+> "I use Spring Data JPA's `Pageable` and `Page` to implement pagination. Instead of loading all employees, I retrieve a fixed number of records per page. This reduces memory usage, database load and response size."
+
+---
+
+# 12. Pagination + Sorting
+
+### Q12. How do you implement sorting with pagination?
+
+### What?
+
+We can combine `Pageable` with `Sort`.
+
+### Why?
+
+The client may want results in a particular order.
+
+### How?
+
+Request:
+
+```text
+GET /api/v1/employees?page=0&size=10&sort=salary,desc
+```
+
+Spring:
+
+```java
+Pageable pageable =
+        PageRequest.of(
+                0,
+                10,
+                Sort.by("salary").descending()
+        );
+```
+
+### Real Project Example
+
+Client asks:
+
+> Give me the first 10 employees with the highest salary.
+
+Request:
+
+```text
+GET /api/v1/employees?page=0&size=10&sort=salary,desc
+```
+
+### Interview Answer
+
+> "Spring Data allows me to combine pagination and sorting using `Pageable`. For example, I can expose `page`, `size` and `sort` parameters so clients can retrieve paginated employees ordered by salary, joining date or another allowed field."
+
+---
+
+# 13. What happens if client requests page size 10,000?
+
+### What?
+
+The client is requesting a very large page.
+
+### Why?
+
+Without limits, a client could cause performance problems.
+
+### How?
+
+I can enforce a maximum page size.
+
+For example:
+
+```text
+Maximum = 100
+```
+
+If client sends:
+
+```text
+size=10000
+```
+
+we cap it to 100 or reject the request.
+
+### Real Project Example
+
+```text
+GET /api/v1/employees?page=0&size=10000
+```
+
+Instead of allowing 10,000 records:
+
+```text
+Maximum allowed = 100
+```
+
+### Interview Answer
+
+> "I would not allow unlimited page sizes. I would configure a maximum page size, for example 100, to protect the API and database from large queries. I would also validate page numbers and sorting fields."
+
+---
+
+# 14. Swagger / OpenAPI
+
+### Q14. What is Swagger/OpenAPI?
+
+### What?
+
+**OpenAPI** is a specification for describing REST APIs.
+
+**Swagger UI** provides an interactive web interface for viewing and testing the API documentation.
+
+### Why?
+
+It helps:
+
+* Developers understand APIs
+* Frontend/backend teams collaborate
+* Test endpoints
+* Document request/response models
+* Understand parameters and status codes
+
+### How?
+
+In Spring Boot, we commonly use **springdoc-openapi**.
+
+Dependency:
+
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.9</version>
+</dependency>
+```
+
+Then Spring Boot can generate OpenAPI documentation from the application's API definitions.
+
+### Real Project Example
+
+Your Employee API:
+
+```text
+GET    /api/v1/employees
+GET    /api/v1/employees/{id}
+POST   /api/v1/employees
+PUT    /api/v1/employees/{id}
+DELETE /api/v1/employees/{id}
+```
+
+Swagger UI allows developers to see and test these endpoints.
+
+### Interview Answer
+
+> "I use OpenAPI with Swagger UI to document REST APIs. It provides an interactive interface where developers can understand endpoints, request parameters, request bodies, response models and status codes, and can also test APIs during development."
+
+---
+
+# 15. Swagger vs Postman
+
+### Q15. What is the difference between Swagger and Postman?
+
+### What?
+
+Both can be used to interact with APIs, but their primary purposes are different.
+
+### Why?
+
+Swagger is more focused on **API documentation and API contract**, while Postman is more focused on **API testing and collections/workflows**.
+
+### How?
+
+Swagger:
+
+```text
+API Documentation
+       ↓
+Swagger UI
+       ↓
+Try API
+```
+
+Postman:
+
+```text
+API Endpoint
+       ↓
+Request
+       ↓
+Headers / Body / Auth
+       ↓
+Response
+       ↓
+Tests
+```
+
+### Real Project Example
+
+For your Employee API:
+
+Swagger can document:
+
+```text
+POST /api/v1/employees
+```
+
+and show the request/response schema.
+
+Postman can be used to test:
+
+```text
+POST
+GET
+PUT
+DELETE
+```
+
+and create a collection containing multiple scenarios.
+
+### Interview Answer
+
+> "Swagger/OpenAPI is primarily used for API documentation and defining the API contract, while Postman is primarily used for API testing and creating reusable request collections. In a project, I can use Swagger for documentation and quick endpoint verification and Postman for detailed functional and negative testing."
+
+---
+
+# 🔥 16. Very Important Combined Interview Question
+
+### Q16. Explain your Employee REST API Controller.
+
+Suppose interviewer asks:
+
+> **"Show me how you would design your Employee Controller."**
+
+### What?
+
+The Controller handles HTTP requests and maps URLs to appropriate operations.
+
+### Why?
+
+It should focus on the **HTTP layer** and delegate business logic to the Service.
+
+### How?
+
+Example:
+
+```java
+@RestController
+@RequestMapping("/api/v1/employees")
+public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployee(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                employeeService.getEmployeeById(id)
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<EmployeeResponse>> getEmployees(
+            @RequestParam(required = false) String department,
+            Pageable pageable) {
+
+        return ResponseEntity.ok(
+                employeeService.getEmployees(
+                        department, pageable
+                )
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<EmployeeResponse> createEmployee(
+            @Valid @RequestBody EmployeeRequest request) {
+
+        EmployeeResponse response =
+                employeeService.createEmployee(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> updateEmployee(
+            @PathVariable Long id,
+            @Valid @RequestBody EmployeeRequest request) {
+
+        return ResponseEntity.ok(
+                employeeService.updateEmployee(id, request)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEmployee(
+            @PathVariable Long id) {
+
+        employeeService.deleteEmployee(id);
+
+        return ResponseEntity.noContent().build();
+    }
+}
+```
+
+### Real Project Flow
+
+```text
+React / Postman
+       ↓
+GET /api/v1/employees/101
+       ↓
+EmployeeController
+       ↓
+@PathVariable → 101
+       ↓
+EmployeeService
+       ↓
+EmployeeRepository
+       ↓
+PostgreSQL
+       ↓
+Employee Entity
+       ↓
+EmployeeResponse DTO
+       ↓
+200 OK
+```
+
+### Interview Answer
+
+> "In my Employee Management project, I use a versioned base URL such as `/api/v1/employees`. The Controller is responsible only for handling HTTP requests, request parameters, path variables, request-body validation and HTTP responses. I use `@PathVariable` for resource IDs, `@RequestParam` for filtering and pagination, and `@RequestBody` with `@Valid` for create and update requests. The Controller delegates business logic to the Service layer and returns appropriate HTTP status codes. I don't put business logic or database operations directly in the Controller."
+
+---
+
+# ⭐ Most Frequently Asked Follow-ups
+
+For your **3–4 year interview**, prepare these especially well:
+
+### Idempotency
+
+> **"Why is PUT idempotent but POST generally isn't?"**
+
+### PathVariable
+
+> **"When would you use PathVariable instead of RequestParam?"**
+
+### RequestParam
+
+> **"How do you make RequestParam optional?"**
+
+### RequestBody
+
+> **"Can GET have RequestBody?"**
+
+A safe interview answer:
+
+> "Although HTTP doesn't universally prohibit a GET body, it is generally not recommended because clients, proxies and servers may not handle it consistently. For GET, I prefer path variables or query parameters."
+
+### Exception Handling
+
+> **"Why use `@RestControllerAdvice`?"**
+
+### Validation
+
+> **"What is the difference between `@Valid` and `@Validated`?"**
+
+### Pagination
+
+> **"How would you handle 10 million records?"**
+
+### Swagger
+
+> **"Swagger vs Postman?"**
+
+---
+
+# 🎯 Quick Revision Sheet
+
+Before your interview, remember this:
+
+```text
+@PathVariable
+→ Resource identification
+→ /employees/101
+
+@RequestParam
+→ Filtering / Search / Pagination
+→ /employees?department=IT
+
+@RequestBody
+→ JSON request data
+→ POST /employees
+
+@Valid
+→ Request validation
+
+@RestControllerAdvice
+→ Global exception handling
+
+Pageable
+→ Pagination + Sorting
+
+OpenAPI / Swagger
+→ API documentation + interactive testing
+
+GET
+→ Retrieve
+→ Idempotent
+
+POST
+→ Create
+→ Generally NOT idempotent
+
+PUT
+→ Full update/replacement
+→ Idempotent
+
+PATCH
+→ Partial update
+→ Depends on implementation
+
+DELETE
+→ Delete
+→ Idempotent
+```
+
+### ⭐ One strong answer for your interview
+
+If the interviewer asks **"What REST API best practices do you follow?"**, you can combine almost everything:
+
+> **"In my Spring Boot REST APIs, I follow resource-based and versioned URLs such as `/api/v1/employees`. I use the appropriate HTTP methods and status codes, DTOs instead of exposing entities, constructor injection, Bean Validation with `@Valid`, centralized exception handling using `@RestControllerAdvice`, and pagination and sorting for large datasets. I use `@PathVariable` for resource identification, `@RequestParam` for filtering and pagination, and `@RequestBody` for request payloads. I also document APIs using OpenAPI/Swagger, secure APIs using Spring Security where required, and write unit and integration tests for positive and negative scenarios."**
