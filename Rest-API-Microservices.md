@@ -381,4 +381,149 @@ Configuration Management is the process of managing, storing, and controlling ap
 
 ---
 
+explain REST API by simply listing annotations. Explain it as **a real project flow**.
 
+### Interview-ready answer
+
+> **"In my project, I developed REST APIs using Spring Boot. I follow a layered architecture with Controller, Service, Repository, and Database layers.**
+>
+> **First, I create the Entity class**, which represents the database table.
+>
+> **Then I create the Repository** using `JpaRepository`, which helps me perform database operations without writing boilerplate SQL for basic CRUD operations.
+>
+> **I use DTOs** for request and response objects instead of exposing the Entity directly.
+>
+> **The Controller layer** handles HTTP requests such as GET, POST, PUT, PATCH, and DELETE.
+>
+> **The Controller calls the Service layer**, where I keep the business logic.
+>
+> **The Service layer calls the Repository**, which uses Spring Data JPA and Hibernate to interact with the MySQL database.
+>
+> After getting the data, I map the Entity to a Response DTO and return it to the client as JSON using `ResponseEntity`.
+>
+> I also handle **request validation using `@Valid`**, exceptions using **`@RestControllerAdvice`**, and return proper HTTP status codes like `201 Created`, `200 OK`, `404 Not Found`, and `400 Bad Request`.
+>
+> I test the APIs using **Postman and Swagger**, and I write unit tests using **JUnit and Mockito**."
+
+### Then show the flow
+
+Draw this on paper/whiteboard:
+
+```text
+React / Postman
+      ↓
+Controller
+      ↓
+DTO + Validation
+      ↓
+Service
+      ↓
+Repository
+      ↓
+JPA / Hibernate
+      ↓
+MySQL
+      ↓
+Entity
+      ↓
+Response DTO
+      ↓
+JSON Response
+```
+
+### Give a practical example
+
+Interviewer: **"Explain one API from your project."**
+
+You:
+
+> "For example, for creating an employee, the React application sends a POST request to `/api/v1/employees` with employee details in JSON format.
+>
+> The Controller receives the request using `@PostMapping` and `@RequestBody`. I use `@Valid` to validate the request.
+>
+> Then the Controller passes the DTO to the Service layer. The Service performs the required business validations and converts the DTO into an Entity.
+>
+> The Repository saves the Entity using `save()`. Hibernate generates the required SQL and stores the data in MySQL.
+>
+> After saving, I convert the Entity into a Response DTO and return it with `201 Created`."
+
+### Example you can write during interview
+
+```java
+@PostMapping
+public ResponseEntity<EmployeeResponse> createEmployee(
+        @Valid @RequestBody EmployeeRequest request) {
+
+    EmployeeResponse response =
+            employeeService.createEmployee(request);
+
+    return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(response);
+}
+```
+
+Then explain:
+
+* `@PostMapping` → handles POST request
+* `@RequestBody` → converts JSON into Java object
+* `@Valid` → validates request data
+* `employeeService` → calls business logic
+* `ResponseEntity` → controls HTTP response
+* `201 CREATED` → resource was successfully created
+
+### ⭐ Very short version to memorize
+
+If the interviewer says **"Explain your REST API architecture in short"**, say:
+
+> **"I follow a layered architecture. The Controller handles HTTP requests, DTOs handle request and response data, the Service layer contains business logic, and the Repository layer communicates with the database using Spring Data JPA and Hibernate. I use validation and global exception handling, return appropriate HTTP status codes, and test the APIs using Postman, Swagger, JUnit, and Mockito."**
+
+This is a **strong 3–4 year experience answer** because you're explaining not just *what REST API is*, but **how you actually build and handle it in a project**.
+
+                         EmployeeController
+                                │
+                 @RequestMapping("/api/v1/employees")
+                                │
+       ┌────────────┬───────────┼───────────┬────────────┐
+       ↓            ↓           ↓           ↓            ↓
+     POST          GET         PUT        PATCH        DELETE
+       │            │           │           │            │
+    Create       Read        Update      Partial       Delete
+    employee     employee    employee    update        employee
+       │            │           │           │            │
+       └────────────┴───────────┴───────────┴────────────┘
+                              ↓
+                         Service Layer
+                              ↓
+                        Repository Layer
+                              ↓
+                           Database
+
+
+HTTP Request
+     ↓
+Controller
+     ↓
+DTO + @Valid
+     ↓
+Service Interface
+     ↓
+ServiceImpl
+     ↓
+Business Logic
+     ↓
+Repository
+     ↓
+JPA
+     ↓
+Hibernate
+     ↓
+PostgreSQL
+     ↓
+Entity
+     ↓
+Mapper
+     ↓
+Response DTO
+     ↓
+HTTP Response
