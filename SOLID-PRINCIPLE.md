@@ -447,3 +447,6 @@ D → Depend on interface, not implementation
 ```
 
 
+Hmm. Okay. For Single Responsibility, in my Spring Boot project, my OrderService handles only order business logic, email and invoice are separate services. So each class has1 reason to change. For Open/Closed, instead of if-else for payments, we'd use a Payment interface with UpiPayment, CardPayment, etc. Adding WalletPayment doesn't modify existing code. For Liskov Substitution, every payment implementation follows the same contract, so the service can swap them without breaking behavior. For Interface Segregation, I split interfaces so a robot only implements Workable, not unnecessary methods. And for Dependency Inversion, my OrderService depends on an OrderRepository interface, and Spring injects the concrete implementation. So, in short, SRP, one job per class; OCP extend not modify; LSP, child behaves like parent contract. ISP small focused interfaces. DIP, depend on abstractions
+
+
