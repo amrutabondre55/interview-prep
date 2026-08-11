@@ -1050,3 +1050,216 @@ Browser
 ```
 
 **This single flow can help you answer many JSP/Servlet questions in the Smart Analytics interview.**
+There are **4 common ways** to pass data from one JSP to another JSP. For your interview, focus especially on **request, session, and URL parameters**.
+
+## 1. Using `request.setAttribute()` + `forward()` ⭐
+
+This is commonly used when you want to pass data **within the same request**.
+
+### JSP 1 — `first.jsp`
+
+```jsp
+<%
+String name = "Amruta";
+
+request.setAttribute("username", name);
+
+RequestDispatcher rd =
+    request.getRequestDispatcher("second.jsp");
+
+rd.forward(request, response);
+%>
+```
+
+### JSP 2 — `second.jsp`
+
+Using EL:
+
+```jsp
+<h2>Welcome ${username}</h2>
+```
+
+Output:
+
+```text
+Welcome Amruta
+```
+
+### Interview explanation
+
+> We can pass data from one JSP to another using request attributes. We store the data using `request.setAttribute()` and forward the request using `RequestDispatcher.forward()`. The second JSP can access the data using Expression Language.
+
+### Flow
+
+```text
+first.jsp
+   ↓
+request.setAttribute()
+   ↓
+RequestDispatcher.forward()
+   ↓
+second.jsp
+   ↓
+${username}
+```
+
+---
+
+# 2. Using Session ⭐
+
+Use this when you want the data to remain available across **multiple requests/pages**.
+
+### First JSP
+
+```jsp
+<%
+session.setAttribute("username", "Amruta");
+%>
+
+<%
+response.sendRedirect("second.jsp");
+%>
+```
+
+### Second JSP
+
+```jsp
+<h2>Welcome ${sessionScope.username}</h2>
+```
+
+Or Java:
+
+```jsp
+<%
+String name = (String) session.getAttribute("username");
+out.println(name);
+%>
+```
+
+### Interview explanation
+
+> If the data needs to be available across multiple requests or pages, I can store it in the HttpSession using `session.setAttribute()` and retrieve it from another JSP.
+
+---
+
+# 3. Using Query Parameters ⭐
+
+You can pass small pieces of data through the URL.
+
+### First JSP
+
+```jsp
+<a href="second.jsp?name=Amruta">
+    Go to Second Page
+</a>
+```
+
+### Second JSP
+
+```jsp
+<%
+String name = request.getParameter("name");
+%>
+
+<h2>Welcome <%= name %></h2>
+```
+
+Or with EL:
+
+```jsp
+Welcome ${param.name}
+```
+
+URL:
+
+```text
+second.jsp?name=Amruta
+```
+
+### Interview explanation
+
+> For simple values, I can pass data as query parameters in the URL and retrieve them using `request.getParameter()` or `${param.name}`.
+
+⚠️ Don't pass passwords or sensitive information through the URL.
+
+---
+
+# 4. Using `application` / ServletContext
+
+This is for data that needs to be shared across the **whole web application**.
+
+### First JSP
+
+```jsp
+<%
+application.setAttribute("companyName", "ABC Ltd");
+%>
+```
+
+### Second JSP
+
+```jsp
+${applicationScope.companyName}
+```
+
+### Interview explanation
+
+> If data needs to be shared across the entire application, we can use ServletContext/application scope. However, we should not use it for user-specific data.
+
+---
+
+# ⭐ Most Important Comparison
+
+| Method        | Scope                          | Example              |
+| ------------- | ------------------------------ | -------------------- |
+| `request`     | Current request                | Form/result data     |
+| `session`     | Multiple requests for one user | Logged-in user       |
+| `param`       | URL/request parameter          | `?id=101`            |
+| `application` | Entire application             | Global configuration |
+
+### Easy way to remember
+
+```text
+request     → One Request
+session     → One User
+application → Whole Application
+param       → URL Parameter
+```
+
+---
+
+# 🔥 Interview Question
+
+**Interviewer:** How can you pass data from one JSP to another JSP?
+
+### Say this:
+
+> "There are multiple ways. If I need to pass data within the same request, I use `request.setAttribute()` and `RequestDispatcher.forward()`. If the data needs to survive across multiple requests, I use `HttpSession`. For simple values, I can use query parameters with `request.getParameter()`. For application-wide data, I can use ServletContext. In a layered application, I generally prefer passing data from Servlet to JSP using request attributes rather than directly putting business logic in JSP."
+
+### ⭐ Real-world flow
+
+In a traditional application, I would generally prefer:
+
+```text
+Browser
+   ↓
+Servlet
+   ↓
+Service
+   ↓
+DAO
+   ↓
+Database
+   ↓
+Servlet
+   ↓
+request.setAttribute()
+   ↓
+RequestDispatcher.forward()
+   ↓
+JSP
+   ↓
+EL/JSTL
+```
+
+For your interview, **remember `request.setAttribute()` + `forward()` extremely well**. This is one of the most useful JSP/Servlet concepts for the JD you shared.
