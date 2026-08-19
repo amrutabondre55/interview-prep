@@ -557,3 +557,143 @@ This allowed scalable storage without worrying about server disk limits.”
 
 "I have used EC2 to deploy apps, RDS for relational database, S3 for file storage, IAM for security, and CloudWatch for monitoring. In production, we combine these services to make applications scalable, secure, and highly available."
 
+
+Yes — this is exactly the kind of **follow-up question an interviewer may ask**.
+
+The answer is:
+
+> **EC2 and Lambda solve different problems. Lambda is not necessarily a replacement for EC2. We use Lambda for small, event-driven tasks while EC2 can run the main application continuously.**
+
+### Simple example
+
+Suppose your application is:
+
+```text
+                Application
+                    |
+          ┌─────────┴─────────┐
+          ↓                   ↓
+         EC2                Lambda
+          ↓                   ↓
+   Spring Boot API       File Processing
+          ↓                   ↑
+         RDS                  S3
+```
+
+### EC2's job
+
+Your Spring Boot application needs to continuously handle:
+
+```text
+GET /employees
+POST /employees
+PUT /employees/101
+DELETE /employees/101
+```
+
+So:
+
+```text
+User
+ ↓
+EC2
+ ↓
+Spring Boot
+```
+
+EC2 is appropriate because the application is a continuously running server.
+
+---
+
+### Lambda's job
+
+Now suppose a user uploads:
+
+```text
+employee-data.xlsx
+```
+
+to S3.
+
+You want to process that file automatically.
+
+Instead of creating another continuously running EC2 server just for this:
+
+```text
+S3
+ ↓
+Lambda
+ ↓
+Process Excel
+ ↓
+RDS
+```
+
+Lambda runs **only when the event occurs**.
+
+---
+
+## Why not use EC2 for everything?
+
+You *can* use EC2 for many things, but it may be unnecessary for event-driven tasks.
+
+Imagine:
+
+```text
+EC2 → running 24 hours
+```
+
+but your file-processing task happens only:
+
+```text
+2 times per day
+```
+
+You're maintaining a server for a workload that is not continuously active.
+
+With Lambda:
+
+```text
+File uploaded
+     ↓
+ Lambda starts
+     ↓
+Process
+     ↓
+Done
+```
+
+AWS manages the underlying infrastructure.
+
+---
+
+# Best interview answer ⭐
+
+If interviewer asks:
+
+**"If you already have EC2, why do you need Lambda?"**
+
+Say:
+
+> **"EC2 and Lambda have different use cases. We use EC2 for our continuously running Spring Boot application because we need a server environment for REST APIs. Lambda is useful for event-driven tasks that don't need a continuously running server. For example, when a file is uploaded to S3, Lambda can automatically process that file. So Lambda complements EC2 rather than necessarily replacing it."**
+
+### Remember this:
+
+**EC2 = Main application/server**
+
+**Lambda = Event-based/specific task**
+
+```text
+                    AWS Application
+                         |
+             ┌───────────┴───────────┐
+             ↓                       ↓
+            EC2                    Lambda
+             ↓                       ↓
+       Spring Boot API        S3/File processing
+             ↓
+            RDS
+```
+
+That's the key concept interviewers want you to understand.
+
