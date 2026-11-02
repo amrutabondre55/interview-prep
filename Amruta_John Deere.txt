@@ -1,0 +1,1047 @@
+I dont exactly recall?
+Sorry, but not aware?
+Could you plz repeate?
+Could you plz explain?
+
+
+kurla location
+
+Do you have any question?
+What is the product?
+Which tech stack are you using?
+
+
+I got laid off from cogni, I searched but at 3 year no luck.
+so I started freelancing.    ---> I joined my friend they were already working on it. (It was US project)
+=========================
+
+
+Bug Fixing , Rate limiting , rabbit MQ
+
+Terraform-----> write the script
+xcel create --->POI
+tool -> vera form
+Project
+resume update
+both are used to state management
+context API -> solve the props drilling problem
+Redux -> for large application
+
+what is N+1 ? how to solve it - performance issue
+Order table and Product table
+1 to many relationship
+================================================================================================================
+Introduction
+"hi , i am Amruta bondre, a java full-stack Developer with 4.5 years of experience.
+Also, i am  certified AWS Developer Associate.
+
+I worked 3 years at cognizant on a Pharma Inventory and batch Traceability System. 
+where i build REST APIs and React Components.
+I built REST APIs with Spring Boot and React components.
+
+After Cognizant, I took,freelance project, it was a Material Management System for a battery Manufacturer, where i have implemnted-diffrent
+types of report & fixed bugs(problem happened on prod, I get exception file(exception stack trace) to troubleshoot). 
+TeckStack used like Java spring Boot,REST APIs,react and AWS.
+
+Now I'm looking for an opportunity where I can contribute effectively and continue to grow as full stack developer.
+
+Thank you.
+================================================================================================================
+
+Q) Explain pharma project.
+Q)->Explain me project about your Role & Responcibilities in that project?
+--> Explain pharma project.
+I worked on a pharma inventory and batch traceability system for Novartis. The application is used to manage 
+pharma products, track drug batches, monitor inventory, handle expiry and recalls, and maintain audit logs 
+for compliance.
+I worked as a Java Full Stack Developer. My responsibilities were 
+
+-Developing Spring Boot REST APIs
+-Building React UI components
+-Writing unit tests using JUnit (framework - mockito)
+-Fixing production issues
+-Working closely with the team in Agile (scrum) --> project management methodology - Agile ->jira task(use story)
+-------------------------------------------------------------------------------------------------------
+I worked as a Java Full Stack Developer on a Pharma Inventory and Batch Traceability System for Novartis.The application
+is used to manage pharma products, track drug batches, monitor inventory, handle expiry and recalls, and maintain audit
+logs for compliance.
+My main responsibilities included developing REST APIs using Java and Spring Boot, 
+building React UI components, and writing unit tests using JUnit. I was also involved in production issue fixing and
+bug resolution. Working closely with the team in Agile.
+
+===============================================================================================================
+
+--> 2nd project -->it was a Material Management System for a battery Manufacturer, where i have implemnted, diffrent
+types of report-created REST APIs so fronend can used it & download. also implemented automated testing using PlayWright(Screen recoding,feld the
+input).it is integared in the CI/CD pipeline.(I was working for freelance team and that team used to collaborate with client).
+TeckStack used like Java spring Boot, REST APIs,react and AWS.
+
+================================================================================================================
+Cogni project(User base -->it was internal project --> 100-150): on-premise servers, api gateway (aws API gateway) - used for central logging and authorization --> Rate limit)
+Freelance (User base -->it was internal project --> 400-500): AWS - ecs-farget, S3 cloudfront: have you deployed it. Yes, they had github action pipeline(I just used it to push code on test env)
+
+khup sarya request --> server autoscalling (will implement autoscale group) --> rate limit
+
+Q>Bug fixes approach: if issue occure on prod how do you troubleshoot?
+	I will check prod log first and what is the problem in logs? --> senior dev used to give
+	Then I'll reproduce it on lower(test) env.
+	Then fix it --> raise PR(Pull request), senior will review it and merge --> deploy on test env --> test
+
+Q> Multithreading.
+	I have used multithreading in my spring boot app with @Async to create thread.
+	@EnableAsync tells Spring Boot to execute methods annotated with @Async in a separate thread.
+	
+Multithreading in Spring Boot means executing multiple tasks concurrently using different threads. It helps improve responsiveness and 
+throughput when tasks can run independently, such as sending emails, processing reports, or calling multiple external APIs. In Spring Boot,
+we can use @Async, ExecutorService, or CompletableFuture to execute tasks asynchronously.
+	
+	do you know completetable future?
+		CompletableFuture is used for asynchronous programming.
+	
+	CompletableFuture<Void> future = CompletableFuture.runAsync(() -> { // pass the method in async
+            System.out.println("Report generation started");
+        });
+		
+	How do I run parallel threads with CompletableFuture?
+	Ill write multiple supplyAsync on CompletableFuture.
+	With CompletableFuture, you can run multiple independent methods concurrently using supplyAsync() or runAsync().
+	
+	
+	CompletableFuture<String> employeeFuture = CompletableFuture.supplyAsync(() -> getEmployeeData());
+    CompletableFuture<String> departmentFuture = CompletableFuture.supplyAsync(() -> getDepartmentData());
+	
+	How do you combine --> thenCombine
+	CompletableFuture<String> result = employeeFuture.thenCombine(departmentFuture, method for combile logic)
+
+	how to get result from CompletableFuture --> use join method. but it is blocking operation
+	System.out.println(result.join());
+	
+	---
+	CompletableFuture is always non-blocking."
+	join() can block when we explicitly wait for the result.
+	
+	supplyAsync() → asynchronous execution
+	get() / join() → wait for the result if necessary.
+	---
+	
+	
+	volatile is used in multithreading to make sure that when one thread changes a variable, other threads can see the latest value.
+	
+	private volatile boolean running = true;
+	
+	A deadlock occurs in multithreading when two or more threads are waiting for each other to release resources, so none of them can continue.
+	
+	1. What is a synchronized method?
+	A synchronized method allows only one thread to enter into method at a time to execute.
+	
+	We use it when multiple threads access and modify shared data, and we want to prevent inconsistent results.
+	
+	
+	Access by 2 threads:
+	method {
+	 map modify //inconsistand data //Throe ConcurrentModificationEx
+	}
+	
+	Solution, add synchronized at method signature level
+	
+	Simply add the synchronized keyword at method signature level:
+		public synchronized void increment() {
+			count++;
+		}
+		
+==============================
+
+What is Singleton Pattern = only one instance of a class should exist in the application, and that instance should be shared.
+
+practical example: datasouce object
+
+Scope in springboot: singleton(default), prototype, session, request
+
+Step 1 — private constructor //private DatabaseConnection()
+Step 2 — static instance variable //private static DatabaseConnection instance;
+Step 3 — static method to return the instance
+
+
+public class DatabaseConnection {
+
+    private static DatabaseConnection instance;
+
+    private DatabaseConnection() {
+        // Private constructor
+    }
+
+    public static DatabaseConnection getInstance() {
+
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+
+        return instance;
+    }
+}
+	
+	-------------------
+
+Give me example of multithread that you have implemented?
+
+	Yes, Completable Future --> Non blocking operation
+	
+	give me example: 
+	You can say:
+	report generation taking time due to large data. it was taking time to generate.
+	So instead of making the user wait for the report generation 
+	we used CompletableFuture for asynchronous processing.
+	when the user request report, async start report generation and 
+	immediately returned a response saying report genrn started. 
+	Update data in table with s3 key and status.
+
+Easy way to remember
+
+1GB file --> s3 updaload --> will do [multipart] updaload
+
+Request → Async → Generate → S3 → DB(s3 key and status-completed) → Dashboard.
+
+	@EnableAsync tells Spring Boot to execute methods annotated with @Async in a separate thread.
+	@SpringBootApplication
+	@EnableAsync
+	public class Application {
+
+		public static void main(String[] args) {
+			SpringApplication.run(Application.class, args);
+		}
+	}
+
+
+   @Async
+    public void generateReport() {
+
+        System.out.println("Report generation started...");
+
+        // 1. Generate the report
+        String filePath = createReport();
+
+        // 2. Upload the report to AWS S3
+        String s3Url = s3Service.uploadFile(filePath);
+
+        // 3. Save S3 URL in database
+        Report report = new Report();
+
+        report.setFileName("employee-report.xlsx");
+        report.setS3Url(s3Url);
+        report.setStatus("COMPLETED");
+
+        reportRepository.save(report);
+
+        System.out.println("Report generation completed.");
+    }
+
+Performance Optimiation:
+FrontEnd: 
+	Q. same api is getting called multiple time, give same result?
+		optimize it with useMemo.
+	Q. same data required frequently in UI? Redux store
+	Q. UI troubleshoot? Ill check network tab and see what is the request, respose and error code ap is return.
+
+Backend: 
+	service Repo layer - may be sql query is slow - Indexing(search fast).
+						Service layer --> multithreding
+	DB layer --> data is not changing frequently --> cache (Redis cache) --> DB call avoide
+
+Rabbit MQ/ AWS SQS: Async architectural
+
+Yes, we used a message queue in our application. In my project, our application published material data to another team's system through MQ. We converted the required material information into a message and sent it to the queue. The other team consumed that message and processed it on their side.
+I was mainly involved in understanding the data flow.
+
+AWS SNS - Simple Notification service -- Broadcast. example newslater brodcast.
+
+-----------------------------------------------
+SOLID- single responsibility principle , open/closed principle /kiskow substituion principle/ interface segation principle/dependency
+-----------------------------------------------
+
+1. What is SOLID?
+
+Interview Answer:
+
+SOLID is a set of five object-oriented design principles used to write clean, maintainable, flexible, and scalable code.
+SOLID stands for:
+S – Single Responsibility Principle - class should have only one responsibility or one reason to change. method --> yes. 
+O – Open/Closed Principle - class should be open for extend and close for modification.
+L – Liskov Substitution Principle - Child object full replaceable by parent;
+I – Interface Segregation Principle
+D – Dependency Inversion Principle
+
+----------------------------------------------------------
+what is the design flow in below.
+
+OrderService
+	Validate the order
+	Calculate the order pricing
+	Save the order into the database
+	Send email notifications
+	Generate PDF invoices
+	Publish order events to Kafka   
+	
+### 1. What design issues do you see?
+> **"The main issue is that `OrderService` has multiple methods/ responsibilities. 
+	validation, pricing, saving the order, email, PDF generation, and Kafka publishing. 
+
+
+### 2. Which SOLID principle is violated?
+> **"Single Responsibility Principle is violated because `OrderService` has multiple responsibilities"**
+	What is Single responsibilty? - class should have only one responsibilitey. 
+	What about method - we implement single responsibilty for method.
+		ex. in spring booth project, 
+		lets say at controller, service and repo layer, we have seperate methods
+	
+### 3. How would you refactor it?
+
+> **"I would separate the responsibilities into different services. 
+For , order validation we can create order service `OrderService` 
+ |-- OrderValidator
+   |-- PricingService 
+   |-- OrderService
+   |-- NotificationService
+   |-- InvoiceService
+   |-- EventPublisher
+   
+### 4. If email notification changes frequently, how does your design help?
+		I will create seperate class email service - open close pricinple
+
+### 5. How would you unit test this service?
+	I will write JUNIT test cases.
+
+
+
+class Bird {
+    void fly() {}
+}
+
+class Sparrow extends Bird{}
+class Penguin extends Bird{}
+
+*Penguin can't fly*
+
+
+Which solid principle is broken?
+	it is not satisfying - Liskov Substitution Principle.
+	it say - Child object full replaceable by parent;
+
+What is the problem?
+	Bird penguin = new Penguin();
+	if we say penguin.fly();// as per condition(*Penguin can't fly*) it is not satisfying.
+
+Solution. 
+	Think.... we can solve it by interface
+	may be we can have commone behavior in Bird.
+	and introduce new interface Fly and move fly method to interface
+
+class Sparrow extends Birds implements fly
+class Penguin extends Birds
+--------------------------------------------------------------------
+
+
+
+
+
+Liskov Substitution Principle — Simple interview definition
+LSP says that a child class should be replaceable with its parent class without breaking the program.
+Bird example
+The problem is: not every bird can fly, so fly() should not be forced into the Bird class.
+Use an interface for flying birds:
+interface Fly {
+    void fly();
+}
+
+class Bird {
+    void eat() {
+        System.out.println("Bird is eating");
+    }
+}
+
+class Sparrow extends Bird implements Fly {
+    @Override
+    public void fly() {
+        System.out.println("Sparrow is flying");
+    }
+}
+
+class Penguin extends Bird {
+    // Penguin cannot fly
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Bird sparrow = new Sparrow();
+        Bird penguin = new Penguin();
+
+        sparrow.eat();   // Works
+        penguin.eat();   // Works
+
+        // Only Flyable birds can fly
+        Flyable flyingBird = new Sparrow();
+        flyingBird.fly();
+
+        // This would NOT compile:
+        // Flyable penguin = new Penguin();
+		}
+	}
+	What is happening?
+	Bird
+	 ├── Sparrow → can eat + fly
+	 └── Penguin → can eat
+
+	Flyable
+	 └── Sparrow
+	Because Penguin is a Bird, we can safely use:
+	Bird bird = new Penguin();
+	bird.eat();
+	But we don't claim every Bird is Flyable.
+	Interview explanation
+	You can say:
+	"For example, Sparrow and Penguin are both Birds, but only Sparrow can fly. If I put fly() in the Bird class, Penguin would inherit a behavior it cannot support, which violates LSP. So I keep common behavior in Bird and use a Flyable interface for birds that can fly. This allows each subclass to be safely substituted where its parent type is expected."
+	Easy memory trick:
+	LSP = "Child should be safely replaceable for Parent."
+
+
+
+AWS Services
+
+Sql
+code
+
+Java Interview Question:
+String - Immutable
+String pool
+
+StringBuilder(mutable) for append when multiple operations/cancat operation.
+how do you make method thread safe( syncronises on method signature).
+
+=============================================================================================
+
+filter() and map() are intermediate operations; collect() and forEach() are terminal operations.
+
+1)Lambda → shorter code
+A lambda expression is a feature introduced in Java 8 that allows us to write concise code to implement a functional interface. 
+It reduces boilerplate code and is commonly used with collections, the Stream API, and functional programming.
+We commonly use it with collections, the Stream API, and methods like filter(), map(), and forEach() to write cleaner code.
+
+Intermediate = process the data.
+Terminal = finish the stream processing.
+
+2)Terminal → ends Stream->orEach(), collect(), count(), reduce(), findFirst(), and anyMatch().
+A terminal operation is an operation in the Java Stream API that produces a final result or performs an action.
+It triggers the processing of the stream.
+forEach() ->Performs an action on each element
+collect() ->Collects elements into a list, set, or another result
+count()->Returns the number of elements
+reduce()->Combines elements into a single result
+findFirst()->Returns the first element, if present
+anyMatch()->Checks whether any element matches a condition
+
+3)Functional Interface → is an interface that contains exactly one abstract method. It is used with lambda expressions in Java 8.
+It can have multiple default and static methods, but only one abstract method.
+
+Predicate<T> -->	Takes input and returns a boolean -->	n -> n > 10
+Function<T, R> -->	Takes input and returns a result	-->		n -> n * 2
+Consumer<T>	-->	Takes input and performs an action -->	n -> System.out.println(n)
+Supplier<T>	-->	Provides a value without taking input	-->		() -> "Hello"
+
+4)Optional → handle possibly missing/null value ->Optional is a class introduced in Java 8 that helps handle values that may be 
+absent (null). It reduces the need for explicit null checks and helps avoid NullPointerException when used correctly.
+
+Functional interface: Defines the contract with one abstract method.
+Lambda expression: Provides the implementation of that method.
+
+Lambda Advantages:
+	Lambda make Java code shorter and cleaner, mostly used with collections, we can say it will make collections processing simple/easy.
+	
+	List<String> names = List.of("Amruta", "John", "Sam");
+	names.forEach(name -> System.out.println(name));
+
+Terminal operations: ends the stream
+	they are stream funtions used to terminate stream or produce a final result .
+	Examples are collect(), forEach(), count(), reduce(), findFirst() and anyMatch()." Name 2 to 3
+	
+	List<String> result = names.stream()
+        .filter(name -> name.startsWith("A")) 
+        .collect(Collectors.toList());
+		
+Intermediate → transforms the stream:  middle
+	filter()
+	map() --> conver one data type to anothor map(emp -> emp.getName)
+	sorted()
+
+Functional Interfaces names:
+	A functional interface is an interface that has exactly one abstract method. Common functional interfaces are Predicate, 
+	Function, Consumer, and Supplier.
+
+stream() creates a stream from the list.
+
+What is Optional and where to use it? 
+	void unnecessary null checks or NullPointerException. 
+	it may or may not contain a value.
+	
+	EX: 
+	Optional<String> name = Optional.ofNullable(getName());
+	name.ifPresent(n -> System.out.println(n));
+	If getName() returns null, Optional contains no value instead of directly calling a method on null.
+	
+	
+	Optional<Employee> employee = employeeRepository.findById(101);
+	employee.ifPresent(e -> System.out.println(e.getName()));
+
+
+Employee emp = null;
+sysout(emp.getName()); It will throw NullPointerEx
+
+String name = null; //"Nilesh";
+if(name != null && name.length() > 0 ){ //name != null ===> null check to avoide NPE
+}
+
+
+============================================================================
+Java code(lambda or word count, String, array) & Sql(joins, aggregate function, group by). 
+
+=================================================================================
+
+============================================================================
+Question on project:
+Batch processing: n records read, or update
+
+
+Read:
+show records on UI -  table has 1L tables --> 
+it is not recommonded to show all records on screen? 
+	why? API will get slow --> fetch data from DB, send from backend server to client and client(browers) has memory limit.
+	Solution --> Pagination -- create page size
+
+Write/Update: 1L records
+	I will do batch update.
+	(Create chunk of batch size may be 500. and then batch update(Insert Update) )
+	
+	JDBCTemplate(read write heavy--> khup sara sara) - Native sql query.
+	JPA --> create sql at runtime.
+	Stored Procedure(DB level code): same database madhe eka table madhun dusrya table madhe data takayla.
+	
+Create different report. 
+	pdf, excel	--> 
+	Recall batch report
+	batches list report ---> last 1 month batch list
+	
+============================================================================
+AWS CloudWatch: logs 
+============================================================================
+
+Design 
+Design order management REST API ?
+Error handling in rest api?
+Error handling : what are some best practices for handling errors in APIs ?
+how would you design an API to provide meaningful error message to clients?
+Benefits of SOLID principles: Discuss the benefits of adhering to SOLID principles in software design. How do they contribute to maintainability and scalability?
+
+===========================================================================
+JAVA , Spring BOOT 
+Memory Model(Stack, heap memory, String pool, outOfMemory, stack overflow(what and why it happens, how to solve))
+String Immutable? 
+	String s1 = "abc";
+	String s2 = "abc";
+	String s3 = new String("abc");
+	
+	== compares object references (memory references), and both references point to the same object.
+	equals() → compares content/value
+--> == vs equals()
+	== is an operator. For objects, it compares whether two references point to the same object. equals() is a method used to compare logical equality or content, depending on how the class implements it. For example, String overrides equals() to compare the actual string content. Therefore, we generally use equals() when we want to compare object values."
+	
+	s1 == s2 //true--> why -->Because both s1 and s2 refer to the same String object in the String Constant Pool
+	== compares object references. When we create Strings using literals, Java stores them in the String Constant Pool. If the same literal already exists, Java reuses the existing object. Therefore, s1 and s2 point to the same object, so s1 == s2 returns true.
+	
+	s1 == s3 //false--> why--> s1 == s3 is false because s1 points to the String Pool object, whereas new String("abc") creates a new String object in the heap. The two references are different. == compares references, while equals() compares the String content.
+	
+	
+StringBuffer vs String Builder
+StringBuffer → Thread-safe → Synchronized → Slower
+StringBuilder → Not thread-safe → Not synchronized → Faster
+Both StringBuffer and StringBuilder are mutable classes used to modify strings efficiently. The main difference is that StringBuffer 
+is synchronized and thread-safe, whereas StringBuilder is not synchronized and is not thread-safe. Because StringBuilder doesn't 
+have synchronization overhead, it is generally faster and is preferred in single-threaded scenarios. StringBuffer can be used 
+when thread-safe operations are required.
+
+->StringBuilder
+	StringBuilder is used to create and modify strings without creating a new String object every time.
+	It is not synchronized, so it is faster.
+	Use it when: Working in a single-threaded environment
+				-You need frequent String modifications
+				-Performance is important
+
+- StringBuffer
+	StringBuffer is also mutable, but its methods are synchronized.
+	Because it is synchronized, it is thread-safe, but generally slower than StringBuilder.
+	Use it when: Multiple threads may access the same StringBuffer
+				-You specifically need thread-safe String modification
+				
+1. Use String when the value doesn't change -> You don't continuously modify employeeName, so String is appropriate.
+2.Use StringBuilder for frequent modifications.-> Suppose you're building a large String: Use StringBuilder when: You are repeatedly 
+				using append(), insert(), delete(), etc.- The code is mainly single-threaded -You want better performance.
+Real project example: If I need to dynamically build a SQL query, log message, CSV row, or response String inside a single request/thread, I would generally use StringBuilder.
+3. Use StringBuffer when thread safety is required.
+
+I use String when the value is not frequently modified because String is immutable. If I need frequent String modifications 
+in a single-threaded scenario, I use StringBuilder because it is mutable and faster. If the same mutable String object needs 
+to be safely accessed and modified by multiple threads, I use StringBuffer because its methods are synchronized.
+------------------------------------------------------------------
+OOPS
+
+------------------------------------------------------------------
+Collection?
+Q&A--> equal hascode contract
+ArrayList LinkedList, when to use & why
+Map , Set -> when to use & why
+------------------------------------------------------------------
+
+Multithreading - Notes 
+@RestControllerAdvice handles exceptions across controllers.
+@ExceptionHandler defines how a particular exception is handled.
+ResponseEntity lets us return the correct HTTP status and response body.
+The generic handler prevents internal exception details from being exposed to clients.
+
+In Spring Boot, I handle exceptions consistently using @RestControllerAdvice and @ExceptionHandler. I create custom exceptions for 
+business scenarios, such as EmployeeNotFoundException, and a standard error response containing the status code, message, and timestamp. 
+The global exception handler returns the appropriate HTTP status, such as 404 for a missing employee or 400 for invalid input. For 
+unexpected errors, I return a generic 500 response and log the detailed exception internally without exposing sensitive information to the 
+client.
+
+What is the difference between @ControllerAdvice and @RestControllerAdvice in Spring Boot?
+Both annotations are used for centralized exception handling in Spring Boot. @ControllerAdvice is commonly used in MVC applications and can
+return views or response bodies depending on the handler configuration. @RestControllerAdvice combines @ControllerAdvice and @ResponseBody,
+so exception handler results are written directly to the HTTP response body. For example, in my Spring Boot REST API, I would use 
+@RestControllerAdvice to return a consistent JSON error response with the appropriate HTTP status code.
+
+4xx status codes: Client-side errors.
+5xx status codes: Server-side errors.
+------------------------------------------------------------------
+
+Exception Handling?
+Q. What is the benefilts of EH?
+-it will help to log exception, which developers can use to troubleshoot problems when it occurs on Prod.
+
+Q.How do you handle Exception in spring boot-Ill use global exception handler(@RestControllerAdvice and @ExceptionHandler) 
+	to handle exception at central place.
+	
+Q)how do you create global exception handler? ->I use @RestControllerAdvice to create a centralized global exception 
+handler. Inside that class, I use @ExceptionHandler for different exception types. For example, if an employee is not 
+found, my service throws a custom EmployeeNotFoundException. The global handler catches it and returns an appropriate 
+HTTP status, such as 404, along with a structured error response. This avoids writing try-catch blocks in every 
+controller and keeps exception handling centralized.
+
+Q. If new excption occurs and not present in global exception handler then?
+ -Ill create new custome exception class and add this new excption in global exception handler
+ 
+Q. How to create custome exception class?
+	- I will create normal class, lets say ResourceNotFound, 
+	then extend RuntimeException, 
+	Then create constructor which will accept String
+	and call parent class constructor and pass that string.
+	
+	// Extending RuntimeException makes it an unchecked exception
+	public class ResourceNotFoundException extends RuntimeException {
+		
+		// Constructor that passes the custom message to the parent RuntimeException class
+		public ResourceNotFoundException(String message) {
+			super(message);
+		}
+	}
+	
+-Throw vs Throw.
+throw = I am throwing the exception now.
+throws = I am telling the caller that this method can throw an exception.
+The main difference is that throw is used to explicitly throw an exception, whereas throws is used to declare in the 
+method signature that the method may throw one or more exceptions. throw is used inside the method body, 
+while throws is used with the method declaration.
+
+“The main difference between throw and throws is that throw is used to explicitly throw an exception, while throws is 
+used to declare exceptions that a method may throw.throw is used inside the method body, and it throws a single 
+exception at a time. throws is used in the method signature and can declare one or more exceptions.
+For example, I can use throw new EmployeeNotFoundException() inside a method, whereas I can declare throws 
+EmployeeNotFoundException in the method signature.”
+
+-Exception vs Error
+1. Exception-An Exception is a problem that occurs during program execution and can usually be handled by the application. 
+eg .IOException,SQLException,NullPointerException,IllegalArgumentException
+2. Error
+An Error is a serious problem, usually related to the JVM or system resources, and applications generally should 
+not try to handle it. Eg ->OutOfMemoryError,StackOverflowError,NoClassDefFoundError
+
+Exception represents an abnormal condition that an application can usually handle or recover from, such as 
+IOException or SQLException. Error represents a serious problem generally related to the JVM or system resources, s
+uch as OutOfMemoryError or StackOverflowError. Both Exception and Error extend Throwable, but we normally handle 
+exceptions rather than errors.
+
+-Exception hierarchy -
+                    Object
+                       |
+                    Throwable
+                   /        \
+              Exception     Error
+                 |
+        -------------------
+        |                 |
+ RuntimeException     Checked Exceptions
+        |                 |
+   NullPointerException IOException
+   ArithmeticException SQLException
+   IllegalArgumentException
+   IndexOutOfBoundsException
+
+Throwable
+   ├── Exception
+   │     ├── RuntimeException
+   │     │      ├── NullPointerException
+   │     │      └── ArithmeticException
+   │     └── Other checked exceptions
+   │            ├── IOException
+   │            └── SQLException
+   │
+   └── Error
+         ├── StackOverflowError
+         └── OutOfMemoryError
+		 
+At the top of the Java exception hierarchy, we have Throwable. It has two main subclasses: Exception and Error.
+
+Exception represents problems that an application can generally handle. Exceptions are mainly divided into checked 
+exceptions and unchecked exceptions. Checked exceptions are checked at compile time, such as IOException and 
+SQLException. Unchecked exceptions are subclasses of RuntimeException and occur at runtime, such as NullPointerException
+and ArithmeticException.
+
+Error represents serious problems related to the JVM or runtime environment, such as StackOverflowError and OutOfMemoryError.”
+
+StackOverflowError OCCURES WHEN STACK IS FULL - when a thread's call stack runs out of memory space because the number of nested method calls has exceeded its designated limit. 
+OutOfMemoryError OCCURES WHEN HEAP MEMORY IS FULL-->WHY- OBJECT ARE GETTING CREATED BUT NOT GARBAGE COLLECTED CALLED MEMORY LEAK.
+
+
+
+“The main difference is when they are checked. Checked exceptions are checked by the compiler, so we must either handle 
+them using try-catch or declare them using throws. Examples are IOException and SQLException.
+
+Unchecked exceptions are not checked by the compiler and generally occur at runtime. They are subclasses of 
+RuntimeException. Examples are NullPointerException and ArithmeticException.”
+
+Q) What is the difference between final, finally, and finalize() in Java?”
+“The main difference is that final is a keyword, finally is a block, and finalize() is a method.
+
+final is used to restrict a variable, method, or class. For example, a final variable cannot be reassigned, a final method cannot 
+be overridden, and a final class cannot be inherited.
+
+finally is a block used with exception handling. It generally executes whether an exception occurs or not, and it is 
+commonly used for cleanup operations.
+
+finalize() was a method associated with garbage collection, but it has been deprecated and should not be used in modern 
+Java.”
+
+---------------------------------------------------------------------------------------------------
+
+
+Q1) What is the REST API and its characteristics? 
+->REST API is an architectural style used to build web services that allow different applications to communicate over HTTP. REST stands for Representational State Transfer.
+->In REST, everything is treated as a resource, such as Employee, Order, or Product, and we use HTTP methods like GET, POST, PUT, PATCH, and DELETE to perform operations on those resources.
+
+characteristics :-The main characteristics of REST are statelessness, client-server architecture, uniform interface, resource-based URLs, proper HTTP methods and status codes, cacheability, and layered architecture.
+
+For example, GET /api/v1/orders/101 can be used to retrieve order 101, while POST /api/v1/orders can create a new order.
+
+Q2)why is stateless important? 
+->“Statelessness means the server does not store the client's session state between requests. Each request must contain all the information required to process it.
+It is important because it makes the application easier to scale. For example, if we have multiple backend servers behind a load balancer, any request can go to any server because the server does not depend on previous requests.
+It also improves reliability because if one server goes down, another server can process the next request without losing the client's session state.
+
+example:-	For authentication, instead of storing session information on the server, we can use a JWT token. The client sends the token with every request, so any server can validate it.”
+Stateless APIs are also easier to cache, monitor, and deploy.
+
+Q3)what challenges does statelessness create? 
+-Although statelessness provides scalability, it also creates some challenges.
+-First, every request needs to contain the required context, such as authentication information, which can increase the request size.
+-Second, we cannot rely on server-side session state, so things like shopping carts or temporary user information need to be stored in an external system such as Redis or a database.
+-Third, repeated authentication and data retrieval can increase processing overhead.
+Finally, designing workflows that depend on previous requests can be more complex because the server doesn't remember the previous request.
+-Strong closing line:-	So, statelessness improves scalability, but we usually move required state to external systems such as databases or distributed caches.
+
+Q4)difference between PUT and PATCH. 
+->Both are HTTP methods used to update a resource, but the main difference is how much data you send.
+->PUT is generally used to replace the complete resource, while PATCH is used to partially update specific fields.
+->For example, suppose an employee has name, email, department, and salary. With PUT, I would generally send the complete employee representation. With PATCH, I could send only the department that needs to be changed.
+->PUT is also considered idempotent, meaning sending the same request multiple times should result in the same final state. PATCH can be idempotent depending on how the API operation is designed.
+
+Q5) what is N+1 problem? 
+The N+1 problem happens when we load a list of parent entities and then trigger one extra query per parent to fetch its children, causing too many queries and slowing down the application. For example, looping through 100 orders and triggering 100 more queries for items. We can solve this by using fetch join or entity graphs to load the needed data in fewer queries.” Quick trick: If you see a parent loop plus lazy loaded children, think N+1.
+
+// The N+1 problem is a database performance issue that commonly occurs when using ORM frameworks such as Hibernate or JPA.
+It happens when the application executes one query to retrieve a list of parent records and then executes an additional query for each parent record to retrieve related data.
+For example, if I fetch 100 orders using one query and then Hibernate executes another query for each order to fetch its order items, we end up with 101 queries. That's why it is called the N+1 problem.
+This can significantly increase database calls and API response time.
+
+Q6) API latency suddenly increased. How would you troubleshoot? 
+Q7)API returning 500 errors.
+
+Transactional Management , isolation levels
+
+Q. How to identify errors client-side versus server-side? 
+->I identify client-side and server-side errors mainly based on the HTTP status code and the error response.
+->4xx errors generally indicate a problem with the client request. For example, 400 Bad Request means invalid input, 401 means authentication is required, and 404 means the requested resource was not found.
+->5xx errors indicate a problem on the server side. For example, 500 Internal Server Error means an unexpected error occurred while processing the request.
+->To troubleshoot, I first check the browser or API client response, request parameters, and payload for 4xx errors. For 5xx errors, I check application logs, stack traces, database connectivity, and downstream services.
+So, in simple terms, 4xx usually means the client request has a problem, while 5xx usually means the server failed while processing a valid request.
+
+4xx → Client/request problem
+5xx → Server/application problem
+
+Q.How do you implement multithreading in Spring Boot? 
+
+Q.Java Streams. What are the Java Streams? Provide an example of how you would use Stream to filter a list of names, stream starting with J. Name the functional interface. new features in Java.
+Java Streams->Java Stream is a feature introduced in Java 8 that allows us to process collections in a declarative and functional style
+-Using Streams, we can perform operations such as filtering, mapping, sorting, and collecting without writing a lot of traditional loops.
+-Streams do not store data. They are used to process data from a source such as a collection
+-For example, if I have a list of names and I want names starting with J, I can use the filter() operation with a lambda expression.
+List<String> names = Arrays.asList("John", "Alice", "James", "Bob", "Jack");
+
+List<String> result = names.stream()
+        .filter(name -> name.startsWith("J"))
+        .collect(Collectors.toList());
+Q)functional interfaces-->A functional interface is an interface that contains exactly one abstract method. It can be used with lambda expressions and method references.
+Predicate → Test
+Function → Convert
+Consumer → Use
+Supplier → Provide
+
+Q)What are the new features in Java?
+“Java has introduced many useful features over different versions. Some important features I have worked with are Java 8 features such as Lambda expressions, Functional Interfaces, Stream API, Optional, and the new Date and Time API.
+
+Java 9 introduced the Module System.
+
+Java 10 introduced local variable type inference using var.
+
+Java 11 provided improvements to the HTTP Client and String APIs.
+
+Java 17 introduced features such as Sealed Classes and Pattern Matching for instanceof, and it became an important long-term-support version.
+
+Java 21 introduced Virtual Threads, which are very useful for high-concurrency applications, along with features such as Record Patterns and Pattern Matching for switch
+
+Java 8 → Lambda, Streams, Optional
+Java 9 → Modules
+Java 10 → var
+Java 11 → HTTP Client
+Java 17 → Sealed Classes, Pattern Matching
+Java 21 → Virtual Threads
+
+Q)If interviewer asks: “Which Java version do you use?”
+I have worked with Java 17, and I am also familiar with newer Java features, particularly Java 21 features such as Virtual Threads.		
+================================================================================================================
+Security
+
+Q What is vulnerability? What is OKTA? 
+-A vulnerability is a weakness or security gap in an application that can be exploited by an attacker. For example, SQL injection, weak authentication, exposing sensitive data, or missing authorization checks can create vulnerabilities.
+-In API security, I try to prevent vulnerabilities by using input validation, authentication and authorization, HTTPS, secure token handling, rate limiting, and proper error handling.
+
+What is OKTA?
+Okta is an identity and access management platform(IAM). It can be used for user authentication, single sign-on, and authorization.
+Think of Okta as a central identity provider between the user and your applications.
+In a REST API architecture, Okta can act as an authorization server. The client authenticates with Okta and obtains an access token. The client then sends that access token to the API, and the API validates the token and checks the required scopes or permissions before allowing access.
+
+Vulnerability = Security weakness
+Okta = Identity + Authentication + Authorization
+
+Q what do you secure REST API? 
+-I would secure REST APIs using authentication, authorization, HTTPS, input validation,Rate limiting token validation, and proper error handling.
+->I secure REST APIs using multiple layers of security.
+First, I use HTTPS to encrypt communication between the client and server.
+Second, I implement authentication, for example using OAuth 2.0 and JWT access tokens.
+Third, I implement authorization using roles and scopes, so authenticated users can only access resources they are permitted to access.
+I also validate request inputs to prevent attacks such as SQL injection, apply rate limiting to prevent abuse, and use secure error handling so sensitive information is not exposed.
+Finally, I use short-lived tokens, secure secret management, logging and monitoring, and proper security headers where applicable.
+
+Authentication answers ‘Who are you?’, while authorization answers ‘What are you allowed to do?’”
+In Spring Boot, Spring Security can be used to implement authentication and authorization.
+
+Q) OAuth 2.0. Explain the OAuth 2.0 authorization framework. How does it ensure secure access to API? 
+
+Q A client starts sending 1000 requests per minute. 
+If one client suddenly starts sending 1000 requests per minute, I would first determine whether this is legitimate traffic or abnormal behavior.
+I would check API metrics, logs, client identification, endpoint usage, and request patterns.
+-If the traffic exceeds the allowed limit, I would apply rate limiting or throttling at the API gateway or application level. For example, I 
+could allow a specific number of requests per minute and return 429 Too Many Requests when the limit is exceeded.
+-I would also investigate why the client is generating so many requests. It could be a retry loop, a bug, or potentially abusive traffic.
+-I would monitor the API's CPU, memory, database connections, and latency to make sure the high traffic isn't affecting other clients.
+If necessary, I would temporarily block or restrict the client and then fix the underlying issue.
+
+⭐ Important
+
+1000 requests/minute doesn't automatically mean an attack.
+
+First:
+
+Identify → Analyze → Rate Limit → Monitor → Investigate
+
+Rate limiting is also important for protecting APIs from excessive resource consumption and availability issues.
+
+Q API gateway. What is an API gateway and what role does it play in API management? Discuss its benefits and potential drawbacks. 
+->“An API Gateway is a single entry point between clients and backend services, especially in a microservices architecture.
+
+Instead of the client directly communicating with multiple microservices, the client sends requests to the API Gateway, and the gateway routes those requests to the appropriate service.
+
+It can also handle common concerns such as authentication, authorization, rate limiting, throttling, request routing, logging, monitoring, and sometimes load balancing or request transformation.
+
+The main benefits are centralized security, simpler client communication, consistent policies, and reduced duplication across microservices.
+
+The potential drawback is that if the gateway is not properly designed and scaled, it can become a bottleneck or a single point of failure. It also adds another network hop and another component to maintain.
+API Gateway = Single Entry Point + Routing + Security + Rate Limiting
+
+Q access token versus ID token. When to use each? 
+
+                 ┌──────────────┐
+                 │     Okta     │
+                 └──────┬───────┘
+                        │
+                  Authentication
+                        │
+                 ┌──────┴───────┐
+                 │              │
+             ID Token      Access Token
+                 │              │
+                 ↓              ↓
+              React        Spring Boot API
+            "Who am I?"    "Can I access this?"
+			
+ID Token -> frontend/user Identity (Who is the user?) --> when - Use ID Token when you need user identity
+Access Token -> Backend API authorization (What can the application access?)-Use Access Token when you need API access
+I use the ID token on the client side for user identity information, and I use the access token when calling protected APIs. 
+The API validates the access token for authorization.
+
+The ID token is part of OpenID Connect and is used for authentication and user identity. 
+The access token is used for authorization and accessing protected resources. 
+In a React and Spring Boot application using Okta, React can use the ID token to know who the logged-in user is, while the 
+access token is sent in the Authorization header when calling protected Spring Boot APIs.
+
+Q)OAuth grant types: authorization code versus client credential.
+Authorization Code :-User Involved 
+Authorization Code is used when a user is involved in the authorization flow. For example, a React application can redirect the
+user to Okta for authentication, and after successful login the application obtains tokens and calls the Spring Boot API.
+flow -> user-login-Authorization code - Access tocken
+
+client credential :- no user involved - used for service to service communication.
+Client Credentials is used for machine-to-machine communication where there is no user.
+flow-> service A - Okta - Acess token - Service B
+
+
+public static void main(String [] args){ 
+	String a [][]=new String[3][3]; 
+		for(int i=o;i<a.length;i++){ 
+			for(int j=0;j<a.length;j++){ 
+				a[i][j] = i+""+j; 
+			} 
+		} 
+		for(int i=o;i<a.length;i++){ 
+			for(int j=0;j<a.length;j++){ 
+				System.out.println(a[i][j] + "\t"); 
+				} 
+				System.out.println("\n"); 
+			}
+	}
+	
+	
+public static void test(boolean a, boolean b) {
+
+    if (a) {
+        System.out.println("A");
+
+    } else if (a && b) {
+        System.out.println("A && B");
+
+    } else {
+        if (!b) {
+            System.out.println("!B");
+        } else {
+            System.out.println("None");
+        }
+    }
+}
+
+package com.example.employeeDemo;
+
+public class Test {
+
+    public static void test(boolean a, boolean b) {//T && T
+
+        if (a) { //F -- if (!a)
+            System.out.println("A");
+        } else if (a && b) { //T && T, F && T--> (!a && b)
+            System.out.println("A && B");
+        } else {
+            if (!b) {   //b-true a-flase in above condition --(print !B -> b-false a-false)
+                System.out.println("!B");
+            } else {
+                System.out.println("None");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        test(true, false); //A
+
+        /*
+            Print A && B --> its not reachable
+            why - to satisfy if (a && b) I need to Table a is T & b is T
+            if a is true then it will satisfy above condition and Print "A"
+
+            what changes you need to make to print A && B in code
+            can we negate first condition - Yes, ok then I will modify and negate first condition to if (!a)
+         */
+        test(true, true); //
+
+        test(false,true);
+
+        test(false,false);
+    }
+}
+/*
+
+    T && T = T
+    T && F = F
+    F && T = F
+    F && F = F
+
+    T || T = T
+    T || F = T
+    F || T = T
+    F || F = F
+
+*/
+
+------------------------------------------------------------------------
+REACT 
+Q) Why is Node.js needed for React app? 
+Q) what is the difference between controller and uncontroller component? 
+Q) how would you optimize a React application for performance? 
+Q) what is debounce and how do you implement it? 
+Q) what is the role of useEffect? How it works and when to use it? 
+Q) when to use Context API and when to use Redux? 
+Q)How do you push backend updates to front end?
+------------------------------------------------------------------------
+DataBase
+Sql
+1) High database load/ code optimization 
+2) Transactional Management , isolation levels
+------------------------------------------------------------------------
+AWS/cloud
+AWS- s3,RDS,Rabbit,ECS,ElasticCache,Lambda,CaaS(Kubernetes),IAM
+
+
+
+Vulnerability → Weakness that can be exploited
+OAuth 2.0 → Framework for delegated authorization
+Okta → Identity and access management platform
+Access Token → Used to call protected APIs
+ID Token → Used by the client to identify/authenticate the user
+Client Credentials → Service-to-service communication
+Authorization Code + PKCE → User-based application flow
+API Gateway → Single entry point for backend APIs
+Rate Limiting → Controls excessive requests
+Spring Security → Implements security in Spring applications
